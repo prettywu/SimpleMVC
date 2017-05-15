@@ -18,5 +18,10 @@ namespace SimpleMVC.Controllers
         {
             return View();
         }
+
+        public ViewResult Register()
+        {
+            return View();
+        }
     }
 }
