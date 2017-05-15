@@ -114,6 +114,11 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Entitys\Enums.cs" />
+    <Compile Include="Entitys\Login.cs" />
+    <Compile Include="Entitys\Role.cs" />
+    <Compile Include="Entitys\User.cs" />
+    <Compile Include="Entitys\UserRole.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
