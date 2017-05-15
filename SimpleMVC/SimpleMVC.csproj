@@ -112,8 +112,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="BLL\AuthManager.cs" />
+    <Compile Include="BLL\UserManager.cs" />
+    <Compile Include="Common.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="DAL\LoginService.cs" />
+    <Compile Include="DAL\RoleService.cs" />
+    <Compile Include="DAL\UserService.cs" />
+    <Compile Include="EFDbContext.cs" />
     <Compile Include="Entitys\Enums.cs" />
     <Compile Include="Entitys\Login.cs" />
     <Compile Include="Entitys\Role.cs" />
@@ -122,6 +129,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -144,7 +152,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

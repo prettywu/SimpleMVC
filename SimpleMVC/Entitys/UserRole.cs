@@ -8,6 +8,11 @@ namespace SimpleMVC.Entitys
 {
     public class UserRole
     {
+        public UserRole()
+        {
+            Id = Guid.NewGuid();
+        }
+
         public Guid Id { get; set; }
 
         public Guid UserId { get; set; }

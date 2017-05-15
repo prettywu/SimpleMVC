@@ -9,6 +9,11 @@ namespace SimpleMVC.Entitys
 {
     public class Login
     {
+        public Login()
+        {
+            Id = Guid.NewGuid();
+        }
+
         public Guid Id { get; set; }
 
         public Guid UserId { get; set; }

@@ -7,6 +7,12 @@ namespace SimpleMVC.Entitys
 {
     public class Enums
     {
+        public enum Gender
+        {
+            Male = 1,
+            Female = 2
+        }
+
         public enum AuthType
         {
             站内=0,
