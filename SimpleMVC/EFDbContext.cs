@@ -1,4 +1,5 @@
-﻿using SimpleMVC.Entitys;
+﻿using SimpleMVC.Common;
+using SimpleMVC.Entitys;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -10,20 +11,31 @@ namespace SimpleMVC
 {
     public class EFDbContext : DbContext
     {
-        public DbSet<User> Users;
-        public DbSet<Role> Roles;
-        public DbSet<Login> Logins;
-        public DbSet<UserRole> UserRoles;
+        public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<Login> Logins { get; set; }
+        public DbSet<UserRole> UserRoles { get; set; }
+
+        
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+        }
     }
 
     public class DbInitilize : DropCreateDatabaseIfModelChanges<EFDbContext>
     {
+        public override void InitializeDatabase(EFDbContext context)
+        {
+            base.InitializeDatabase(context);
+        }
+
         protected override void Seed(EFDbContext context)
         {
             var user = new User
             {
                 UserName = "yoyo@qq.com",
-                PasswordHash = "528888",
+                PasswordHash = MvcHelper.MD5encryption("528888"),
                 NickName = "yoyo",
                 Birthday = new DateTime(1990, 12, 14),
                 Gender = (int)Gender.Female,

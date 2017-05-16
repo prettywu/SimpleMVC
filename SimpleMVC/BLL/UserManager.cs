@@ -1,4 +1,5 @@
-﻿using SimpleMVC.DAL;
+﻿using SimpleMVC.Common;
+using SimpleMVC.DAL;
 using SimpleMVC.Entitys;
 using System;
 using System.Collections.Generic;
@@ -10,25 +11,55 @@ namespace SimpleMVC.BLL
 {
     public class UserManager
     {
-        public static User LoginPasswordCheck(string username, string password)
+        public User GetUserByUserId(Guid userId)
+        {
+            if (userId.Equals(Guid.Empty)) return null;
+            using (var context = new EFDbContext())
+            {
+                return context.Users.Where(u => u.Id == userId).FirstOrDefault();
+            }
+        }
+
+        public User GetUserByUserName(string username)
+        {
+            return UserService.GetUserByUserName(username);
+        }
+
+        public Login GetLoginByLoginId(string loginId)
+        {
+            if (string.IsNullOrEmpty(loginId)) return null;
+            using (var context=new EFDbContext())
+            {
+                return context.Logins.Where(l => l.Id == new Guid(loginId)).FirstOrDefault();
+            }
+        }
+
+        public User LoginPasswordCheck(string username, string password)
         {
             var user = UserService.GetUserByUserName(username);
             if (user == null) return null;
-            if (Common.MD5encryption(password) == user.PasswordHash)
+            if (MvcHelper.MD5encryption(password) == user.PasswordHash)
             {
                 return user;
             }
             return null;
         }
         
-        public static bool WriteLoginInfo(Login login)
+        public bool WriteLoginInfo(Login login)
         {
             return LoginService.AddLogin(login) > 0;
         }
 
-        public static List<Role> GetUserRoles(Guid userId)
+        public List<Role> GetUserRoles(Guid userId)
         {
             return RoleService.GetUserRoles(userId);
         }
+
+        public bool RegistNewUser(User user)
+        {
+            return UserService.AddUser(user) > 0;
+        }
+
+
     }
 }
