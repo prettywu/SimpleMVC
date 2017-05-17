@@ -17,17 +17,12 @@ namespace SimpleMVC
             {
                 throw new ArgumentNullException("httpContext");
             }
-            //IPrincipal identity = filterContext.Principal;
-            //if (!identity.Identity.IsAuthenticated)
-            //{
-            //    filterContext.Result= new HttpUnauthorizedResult();
-            //}
-            
-
-            if (!AuthManager.ReadAuthInfo())
+            IPrincipal identity = filterContext.Principal;
+            if (!identity.Identity.IsAuthenticated)
             {
                 filterContext.Result = new HttpUnauthorizedResult();
             }
+            
         }
 
         public void OnAuthenticationChallenge(AuthenticationChallengeContext filterContext)

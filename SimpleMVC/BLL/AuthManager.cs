@@ -23,7 +23,7 @@ namespace SimpleMVC.BLL
         {
             if (user != null)
             {
-                MvcIdentity mvcIdentity = new MvcIdentity(user.Id, token, user.UserName, user.NickName, user.HeadImage, user.Gender);
+                MvcIdentity mvcIdentity = new MvcIdentity(user, token);
                 HttpContext.Current.User = new MvcPrincipal(mvcIdentity);
                 HttpCookie cookie = new HttpCookie(cookie_name)
                 {
@@ -51,7 +51,7 @@ namespace SimpleMVC.BLL
                     var user = userManager.GetUserByUserId(loign.UserId);
                     if (user != null)
                     {
-                        MvcIdentity mvcIdentity = new MvcIdentity(user.Id, loign.Id.ToString(), user.UserName, user.NickName, user.HeadImage, user.Gender);
+                        MvcIdentity mvcIdentity = new MvcIdentity(user, loign.Id.ToString());
                         HttpContext.Current.User = new MvcPrincipal(mvcIdentity);
                         HttpContext.Current.Response.Cookies.Add(new HttpCookie(cookie_name)
                         {

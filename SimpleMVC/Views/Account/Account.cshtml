@@ -1,0 +1,28 @@
+﻿
+@{
+    ViewBag.Title = "管理";
+}
+
+<h2>@ViewBag.Title。</h2>
+
+<p class="text-success">@ViewBag.StatusMessage</p>
+<div>
+    <h4>更改你的帐户设置</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>密码:</dt>
+        <dd>
+            [
+            @if (!string.IsNullOrEmpty((User.Identity as MvcIdentity).User.PasswordHash))
+            {
+                @Html.ActionLink("更改密码", "ChangePassword")
+            }
+            else
+            {
+                @Html.ActionLink("创建", "SetPassword")
+            }
+            ]
+        </dd>
+        
+    </dl>
+</div>

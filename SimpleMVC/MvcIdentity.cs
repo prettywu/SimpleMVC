@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SimpleMVC.Entitys;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
@@ -8,20 +9,13 @@ namespace SimpleMVC
 {
     public class MvcIdentity : IIdentity
     {
-        private Guid _id;
+        private User _user;
         private string _token;
-        private string _username;
-        private string _nickname;
-        private string _headimage;
-        private int _gender;
-        public MvcIdentity(Guid id,string token,string username,string nickname,string headimage,int gender)
+        
+        public MvcIdentity(User user, string token)
         {
-            _id = id;
+            _user = user;
             _token = token;
-            _username = username;
-            _nickname = nickname;
-            _headimage = headimage;
-            _gender = gender;
         }
 
         public string AuthenticationType
@@ -48,12 +42,14 @@ namespace SimpleMVC
             }
         }
 
-        public Guid Id { get { return _id; } }
-        public string Token { get { return _token; } }
-        public string UserName { get { return _username; } }
-        public string NickName { get { return _nickname; } }
-        public string HeadImage { get { return _headimage; } }
-        public int Gender { get { return _gender; } }
+        public User User { get { return _user; } }
+
+        //public Guid Id { get { return _id; } }
+        //public string Token { get { return _token; } }
+        //public string UserName { get { return _username; } }
+        //public string NickName { get { return _nickname; } }
+        //public string HeadImage { get { return _headimage; } }
+        //public int Gender { get { return _gender; } }
     }
 
     public class MvcPrincipal : IPrincipal
