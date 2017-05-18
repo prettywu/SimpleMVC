@@ -25,6 +25,21 @@ namespace SimpleMVC.BLL
             return UserService.GetUserByUserName(username);
         }
 
+        public static User GetTokenByToken(string token)
+        {
+            if (string.IsNullOrEmpty(token)) return null;
+            using (var context = new EFDbContext())
+            {
+                var login= context.Logins.Where(l => l.Id == new Guid(token)).FirstOrDefault();
+                if (login != null)
+                {
+                    return context.Users.Where(u => u.Id == login.UserId).FirstOrDefault();
+                }
+                return null;
+            }
+            
+        }
+
         public Login GetLoginByLoginId(string loginId)
         {
             if (string.IsNullOrEmpty(loginId)) return null;

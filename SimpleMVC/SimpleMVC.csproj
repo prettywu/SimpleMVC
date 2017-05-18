@@ -143,7 +143,6 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="AuthenticationAttribute.cs" />
     <Compile Include="BLL\AuthManager.cs" />
     <Compile Include="BLL\UserManager.cs" />
     <Compile Include="Common\MvcHelper.cs" />
@@ -164,7 +163,6 @@
     </Compile>
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\RegisterModel.cs" />
-    <Compile Include="MvcIdentity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -190,6 +188,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SimpleMvc.Identity\SimpleMvc.Identity.csproj">
+      <Project>{3a7432fe-f3be-4408-aadb-a16f43bf9827}</Project>
+      <Name>SimpleMvc.Identity</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

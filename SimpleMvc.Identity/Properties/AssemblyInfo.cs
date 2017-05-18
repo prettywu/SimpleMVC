@@ -38,4 +38,4 @@ using System.Web;
 [assembly: AssemblyFileVersion("1.0.0.0")]
 
 //启动方法
-[assembly:PreApplicationStartMethod(typeof(Startup), "Startup")]
+[assembly:PreApplicationStartMethod(typeof(Startup), "Start")]

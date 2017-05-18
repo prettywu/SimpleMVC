@@ -7,7 +7,7 @@ using System.Web;
 
 namespace SimpleMvc.Identity
 {
-    class AuthenticationModule : IHttpModule
+    public class AuthenticationModule : IHttpModule
     {
         public void Dispose()
         {
@@ -17,8 +17,8 @@ namespace SimpleMvc.Identity
         public virtual void Init(HttpApplication application)
         {
 
-            application.AuthenticateRequest += new EventHandler(this.OnAuthenticateRequest);
-
+            application.AuthenticateRequest += new EventHandler(OnAuthenticateRequest);
+            application.PostRequestHandlerExecute += new EventHandler(OnPostRequestHandlerExecute);
         }
 
         /// <summary>
@@ -28,9 +28,12 @@ namespace SimpleMvc.Identity
         /// <param name="e"></param>
         private void OnAuthenticateRequest(object sender, EventArgs e)
         {
-
+            SimpleAuthentication.ReadAuthenticateInfo((HttpApplication)sender);
         }
 
-        
+        private void OnPostRequestHandlerExecute(object sender, EventArgs e)
+        {
+            SimpleAuthentication.WriteToken((HttpApplication)sender);
+        }
     }
 }

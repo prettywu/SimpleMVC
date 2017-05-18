@@ -1,4 +1,4 @@
-﻿
+﻿@using SimpleMvc.Identity
 @{
     ViewBag.Title = "管理";
 }
@@ -13,7 +13,7 @@
         <dt>密码:</dt>
         <dd>
             [
-            @if (!string.IsNullOrEmpty((User.Identity as MvcIdentity).User.PasswordHash))
+            @if (!string.IsNullOrEmpty(User.GetEntity().GetUserInfo<SimpleMVC.Entitys.User>().PasswordHash))
             {
                 @Html.ActionLink("更改密码", "ChangePassword")
             }

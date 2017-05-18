@@ -9,6 +9,7 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using static SimpleMVC.Entitys.Enums;
+using SimpleMvc.Identity;
 
 namespace SimpleMVC.Controllers
 {

@@ -1,4 +1,5 @@
-﻿using SimpleMVC.App_Start;
+﻿using SimpleMvc.Identity;
+using SimpleMVC.App_Start;
 using SimpleMVC.BLL;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,8 @@ namespace SimpleMVC
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            SimpleAuthentication.Create(UserManager.GetTokenByToken);
+
 
             Database.SetInitializer<EFDbContext>(new DbInitilize());
             //using (var context = new EFDbContext())
@@ -37,7 +40,6 @@ namespace SimpleMVC
         //   预订 AuthenticateRequest 事件可确保在处理附加的模块或事件处理程序之前对请求进行身份验证
         protected void Application_AuthenticateRequest(object sender, EventArgs e)
         {
-            AuthManager.ReadAuthInfo();
             var user = this.User;
             var user2 = ((HttpApplication)sender).User;
         }
