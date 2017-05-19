@@ -119,11 +119,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="assets\css\font.css" />
+    <Content Include="charts.html" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Site.css" />
+    <Content Include="elements.html" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="icons.html" />
+    <Content Include="index.html" />
+    <Content Include="notifications.html" />
+    <Content Include="page-lockscreen.html" />
+    <Content Include="page-login.html" />
+    <Content Include="page-profile.html" />
+    <Content Include="panels.html" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
@@ -138,6 +148,8 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <None Include="Scripts\_references.js" />
+    <Content Include="tables.html" />
+    <Content Include="typography.html" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -148,6 +160,7 @@
     <Compile Include="Common\MvcHelper.cs" />
     <Compile Include="Common\Json.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="DAL\LoginService.cs" />
     <Compile Include="DAL\RoleService.cs" />
@@ -179,6 +192,16 @@
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Account\Account.cshtml" />
+    <Content Include="Views\Shared\_Layout_admin.cshtml" />
+    <Content Include="Views\Admin\Login.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Admin\Elements.cshtml" />
+    <Content Include="Views\Admin\Panels.cshtml" />
+    <Content Include="Views\Admin\Notifications.cshtml" />
+    <Content Include="Views\Admin\Tables.cshtml" />
+    <Content Include="Views\Admin\Typography.cshtml" />
+    <Content Include="Views\Admin\Icons.cshtml" />
+    <Content Include="Views\Admin\UserManagement.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
