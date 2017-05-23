@@ -13,7 +13,7 @@ using SimpleMvc.Identity;
 
 namespace SimpleMVC.Controllers
 {
-    [Authentication]
+    [Authorize]
     public class AdminController : Controller
     {
         public UserManager userManager = new UserManager();
@@ -25,6 +25,7 @@ namespace SimpleMVC.Controllers
             return View();
         }
 
+        [AllowAnonymous]
         public ViewResult Login()
         {
             return View();
@@ -77,6 +78,7 @@ namespace SimpleMVC.Controllers
 
         #region Apis
         [HttpPost]
+        [AllowAnonymous]
         public ActionResult Login(AdminLoginModel model)
         {
             if (!ModelState.IsValid)
@@ -107,7 +109,7 @@ namespace SimpleMVC.Controllers
             return View(model);
         }
 
-
+       
         #endregion
 
 

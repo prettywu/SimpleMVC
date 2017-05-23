@@ -11,7 +11,7 @@ namespace SimpleMvc.Identity
     {
         public void Dispose()
         {
-            throw new NotImplementedException();
+           
         }
 
         public virtual void Init(HttpApplication application)
