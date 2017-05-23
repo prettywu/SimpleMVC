@@ -9,9 +9,11 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using static SimpleMVC.Entitys.Enums;
+using SimpleMvc.Identity;
 
 namespace SimpleMVC.Controllers
 {
+    [Authentication]
     public class AdminController : Controller
     {
         public UserManager userManager = new UserManager();
@@ -28,6 +30,28 @@ namespace SimpleMVC.Controllers
             return View();
         }
 
+        public ViewResult Lock()
+        {
+            return View();
+        }
+        
+        public ViewResult UserManagement()
+        {
+            return View();
+        }
+
+        public ViewResult MyAccount()
+        {
+            var user = User.GetEntity().GetUserInfo<User>();
+            return View(user);
+        }
+
+        public ViewResult ReSetPassword()
+        {
+            return View();
+        }
+
+        #region Demo
         public ViewResult Elements()
         {
             return View();
@@ -44,20 +68,16 @@ namespace SimpleMVC.Controllers
         }
 
         public ViewResult Tables() { return View(); }
-        
+
         public ViewResult Typography() { return View(); }
 
         public ViewResult Icons() { return View(); }
-
-        public ViewResult UserManagement()
-        {
-            return View();
-        }
+        #endregion
         #endregion
 
-        #region Actions
+        #region Apis
         [HttpPost]
-        public ActionResult Login(LoginModel model)
+        public ActionResult Login(AdminLoginModel model)
         {
             if (!ModelState.IsValid)
                 return View(model);
@@ -76,7 +96,7 @@ namespace SimpleMVC.Controllers
                     };
                     userManager.WriteLoginInfo(login);
                     AuthManager.SignIn(user, login.Id.ToString());
-                    return RedirectToAction("Admin", "Index");
+                    return RedirectToAction("Index", "Admin");
                 }
                 ModelState.AddModelError("", "用户名或密码错误");
             }
@@ -89,8 +109,8 @@ namespace SimpleMVC.Controllers
 
 
         #endregion
-        
-        
+
+
 
         private void AddActionException(Exception e)
         {

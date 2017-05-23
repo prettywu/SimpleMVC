@@ -26,5 +26,12 @@ namespace SimpleMVC.Entitys
             WebBrowser=0,
             MobileBrowser=1,
         }
+
+        public enum ReturnCode
+        {
+            参数错误=100,
+            业务异常=200,
+            系统异常=500
+        }
     }
 }

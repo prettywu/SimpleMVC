@@ -1,6 +1,7 @@
-﻿@{ 
+﻿@{
     Layout = null;
 }
+@model SimpleMVC.Models.AdminLoginModel
 <!doctype html>
 <html lang="en" class="fullscreen-bg">
 <head>
@@ -14,8 +15,7 @@
     <link rel="stylesheet" href="/assets/vendor/linearicons/style.css">
     <!-- MAIN CSS -->
     <link rel="stylesheet" href="/assets/css/main.css">
-    <!-- FOR DEMO PURPOSES ONLY. You should remove this in your project -->
-    <link rel="stylesheet" href="/assets/css/demo.css">
+   
     <!-- GOOGLE FONTS -->
     <link href="~/assets/css/font.css" rel="stylesheet" />
     <!-- ICONS -->
@@ -34,14 +34,40 @@
                                 <div class="logo text-center"><img src="/assets/img/logo-dark.png" alt="Klorofil Logo"></div>
                                 <p class="lead">Login to your account</p>
                             </div>
-                            <form class="form-auth-small" action="/Admin/Login" method="post">
+                            @*<form class="form-auth-small" action="/Admin/Login" method="post">
+                                    <div class="form-group">
+                                        <label for="signin-email" class="control-label sr-only">Email</label>
+                                        <input type="email" class="form-control" id="signin-email" name="UserName" value="" placeholder="Email">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="signin-password" class="control-label sr-only">Password</label>
+                                        <input type="password" class="form-control" id="signin-password" name="Password" value="" placeholder="Password">
+                                    </div>
+                                    <div class="form-group clearfix">
+                                        <label class="fancy-checkbox element-left">
+                                            <input type="checkbox">
+                                            <span>Remember me</span>
+                                        </label>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-lg btn-block">LOGIN</button>
+                                    <div class="bottom">
+                                        <span class="helper-text"><i class="fa fa-lock"></i> <a href="#">Forgot password?</a></span>
+                                    </div>
+                                </form>*@
+                            @using (Html.BeginForm("Login", "Admin", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-auth-small", role = "form" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.ValidationSummary(false, "", new { @class = "text-danger" })
                                 <div class="form-group">
-                                    <label for="signin-email" class="control-label sr-only">Email</label>
-                                    <input type="email" class="form-control" id="signin-email" name="UserName" value="" placeholder="Email">
+                                    @Html.LabelFor(m => m.UserName, new { @class = "control-label sr-only", @for = "signin-email" })
+                                    @Html.TextBoxFor(m => m.UserName, new { @id = "signin-email", @class = "form-control", @placeholder = "Email" })
+                                    @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group">
-                                    <label for="signin-password" class="control-label sr-only">Password</label>
-                                    <input type="password" class="form-control" id="signin-password" name="Password" value="" placeholder="Password">
+                                    @Html.LabelFor(m => m.Password, new { @class = "control-label sr-only", @for = "signin-password" })
+                                    @Html.PasswordFor(m => m.Password, new { @id = "signin-password", @class = "form-control", @placeholder = "Password" })
+                                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+
                                 </div>
                                 <div class="form-group clearfix">
                                     <label class="fancy-checkbox element-left">
@@ -53,14 +79,17 @@
                                 <div class="bottom">
                                     <span class="helper-text"><i class="fa fa-lock"></i> <a href="#">Forgot password?</a></span>
                                 </div>
-                            </form>
+                                @*<p>
+                                        @Html.ActionLink("注册为新用户", "Register")
+                                    </p>*@
+                            }
                         </div>
                     </div>
                     <div class="right">
                         <div class="overlay"></div>
                         <div class="content text">
-                            <h1 class="heading">Free Bootstrap dashboard template</h1>
-                            <p>by The Develovers</p>
+                            <h1 class="heading">管理后台</h1>
+                            <p>by The Pretty</p>
                         </div>
                     </div>
                     <div class="clearfix"></div>
@@ -69,5 +98,8 @@
         </div>
     </div>
     <!-- END WRAPPER -->
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+
 </body>
 </html>

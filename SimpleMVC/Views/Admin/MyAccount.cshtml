@@ -1,0 +1,73 @@
+﻿@using SimpleMVC.Entitys;
+@model SimpleMVC.Entitys.User
+@{
+    ViewBag.Title = "MyAccount";
+    Layout = "~/Views/Shared/_Layout_admin.cshtml";
+}
+<div class="container-fluid">
+    <div class="panel panel-headline">
+        <div class="panel-heading">
+            <h3 class="panel-title">我的账户</h3>
+            <a class="right" style="text-decoration:underline" href="/admin/resetpassword">修改密码</a>
+            
+            @*<p class="panel-subtitle">Period: Oct 14, 2016 - Oct 21, 2016</p>*@
+        </div>
+        <div class="panel-body">
+            <div class="row p-bottom">
+                <div class="col-md-1">
+                    <span class="title">昵称：</span>
+                </div>
+                <div class="col-md-5">
+                    <span id="nickname">@Model.NickName</span>
+                </div>
+            </div>
+            <div class="row p-bottom">
+                <div class="col-md-1">
+                    <span class="title">账号：</span>
+                </div>
+                <div class="col-md-5">
+                    <span id="username">@Model.UserName</span>
+                </div>
+
+            </div>
+            <div class="row p-bottom">
+                <div class="col-md-1">
+                    <span class="title">头像：</span>
+                </div>
+                <div class="col-md-5">
+                    <img id="headimage" class="p-top size-img-head" src="@Model.HeadImage" />
+                </div>
+
+            </div>
+            <div class="row p-bottom">
+                <div class="col-md-1">
+                    <span class="title">生日：</span>
+                </div>
+                <div class="col-md-5">
+                    <span id="birthday">@Model.Birthday.ToString("yyyy-MM-dd")</span>
+                </div>
+
+            </div>
+            <div class="row p-bottom">
+                <div class="col-md-1">
+                    <span class="title">性别：</span>
+                </div>
+                <div class="col-md-5">
+                    <i class="fa fa @(Model.Gender==1?"fa-mars":"fa-venus")" aria-hidden="true"></i>
+                    <span id="gender">@(Enum.Parse(typeof(Enums.Gender), Model.Gender.ToString()).ToString())</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-1">
+                    <span class="title">注册时间：</span>
+                </div>
+                <div class="col-md-5">
+                    <span id="registtime">@Model.RegistTime.ToString("yyyy-MM-dd HH:mm:ss")</span>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+

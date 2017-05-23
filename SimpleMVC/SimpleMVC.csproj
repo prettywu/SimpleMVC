@@ -119,7 +119,57 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="assets\css\bootstrap.css" />
+    <Content Include="assets\css\bootstrap.min.css" />
+    <Content Include="assets\css\demo.css" />
     <Content Include="assets\css\font.css" />
+    <Content Include="assets\css\main.css" />
+    <Content Include="assets\css\user.css" />
+    <Content Include="assets\img\apple-icon.png" />
+    <Content Include="assets\img\favicon.png" />
+    <Content Include="assets\img\login-bg.jpg" />
+    <Content Include="assets\img\logo-dark.png" />
+    <Content Include="assets\img\profile-bg.png" />
+    <Content Include="assets\img\user-medium.png" />
+    <Content Include="assets\img\user.png" />
+    <Content Include="assets\img\user1.png" />
+    <Content Include="assets\img\user2.png" />
+    <Content Include="assets\img\user3.png" />
+    <Content Include="assets\img\user4.png" />
+    <Content Include="assets\img\user5.png" />
+    <Content Include="assets\scripts\klorofil-common.js" />
+    <Content Include="assets\vendor\bootstrap\css\bootstrap-theme.css" />
+    <Content Include="assets\vendor\bootstrap\css\bootstrap-theme.min.css" />
+    <Content Include="assets\vendor\bootstrap\css\bootstrap.css" />
+    <Content Include="assets\vendor\bootstrap\css\bootstrap.min.css" />
+    <Content Include="assets\vendor\bootstrap\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="assets\vendor\bootstrap\js\bootstrap.js" />
+    <Content Include="assets\vendor\bootstrap\js\bootstrap.min.js" />
+    <Content Include="assets\vendor\bootstrap\js\npm.js" />
+    <Content Include="assets\vendor\chartist\css\chartist-custom.css" />
+    <Content Include="assets\vendor\chartist\css\chartist.css" />
+    <Content Include="assets\vendor\chartist\css\chartist.min.css" />
+    <Content Include="assets\vendor\chartist\js\chartist.js" />
+    <Content Include="assets\vendor\chartist\js\chartist.min.js" />
+    <Content Include="assets\vendor\font-awesome\css\font-awesome.css" />
+    <Content Include="assets\vendor\font-awesome\css\font-awesome.min.css" />
+    <Content Include="assets\vendor\font-awesome\fonts\fontawesome-webfont.svg" />
+    <Content Include="assets\vendor\jquery-slimscroll\jquery.slimscroll.js" />
+    <Content Include="assets\vendor\jquery-slimscroll\jquery.slimscroll.min.js" />
+    <Content Include="assets\vendor\jquery.easy-pie-chart\angular.easypiechart.js" />
+    <Content Include="assets\vendor\jquery.easy-pie-chart\angular.easypiechart.min.js" />
+    <Content Include="assets\vendor\jquery.easy-pie-chart\easypiechart.js" />
+    <Content Include="assets\vendor\jquery.easy-pie-chart\easypiechart.min.js" />
+    <Content Include="assets\vendor\jquery.easy-pie-chart\jquery.easypiechart.js" />
+    <Content Include="assets\vendor\jquery.easy-pie-chart\jquery.easypiechart.min.js" />
+    <Content Include="assets\vendor\jquery\jquery.js" />
+    <Content Include="assets\vendor\jquery\jquery.min.js" />
+    <Content Include="assets\vendor\linearicons\fonts\Linearicons-Free.svg" />
+    <Content Include="assets\vendor\linearicons\style.css" />
+    <Content Include="assets\vendor\toastr\toastr.css" />
+    <Content Include="assets\vendor\toastr\toastr.js" />
+    <Content Include="assets\vendor\toastr\toastr.min.css" />
+    <Content Include="assets\vendor\toastr\toastr.min.js" />
     <Content Include="charts.html" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
@@ -136,6 +186,27 @@
     <Content Include="panels.html" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="assets\vendor\bootstrap\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="assets\vendor\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="assets\vendor\bootstrap\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="assets\vendor\bootstrap\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="assets\vendor\chartist\css\chartist-custom.css.map" />
+    <Content Include="assets\vendor\chartist\map\chartist.css.map" />
+    <Content Include="assets\vendor\chartist\map\chartist.min.js.map" />
+    <Content Include="assets\vendor\chartist\scss\chartist.scss" />
+    <Content Include="assets\vendor\font-awesome\fonts\fontawesome-webfont.eot" />
+    <Content Include="assets\vendor\font-awesome\fonts\fontawesome-webfont.ttf" />
+    <Content Include="assets\vendor\font-awesome\fonts\fontawesome-webfont.woff" />
+    <Content Include="assets\vendor\font-awesome\fonts\fontawesome-webfont.woff2" />
+    <Content Include="assets\vendor\font-awesome\fonts\FontAwesome.otf" />
+    <Content Include="assets\vendor\jquery\jquery.min.map" />
+    <Content Include="assets\vendor\linearicons\fonts\Linearicons-Free.eot" />
+    <Content Include="assets\vendor\linearicons\fonts\Linearicons-Free.ttf" />
+    <Content Include="assets\vendor\linearicons\fonts\Linearicons-Free.woff" />
+    <Content Include="assets\vendor\linearicons\fonts\Linearicons-Free.woff2" />
+    <Content Include="assets\css\demo.css.map" />
+    <Content Include="assets\css\main.css.map" />
+    <None Include="Properties\PublishProfiles\web.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -174,6 +245,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AdminLoginModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\RegisterModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -202,6 +274,8 @@
     <Content Include="Views\Admin\Typography.cshtml" />
     <Content Include="Views\Admin\Icons.cshtml" />
     <Content Include="Views\Admin\UserManagement.cshtml" />
+    <Content Include="Views\Admin\MyAccount.cshtml" />
+    <Content Include="Views\Admin\ReSetPassword.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

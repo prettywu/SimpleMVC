@@ -1,0 +1,18 @@
+﻿.p-bottom {
+    padding-bottom: 10px;
+}
+
+.p-top {
+    padding-top: 5px;
+}
+
+.size-img-head {
+    width: 150px;
+    height: 150px;
+}
+
+.alert-normal {
+    padding: 5px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
