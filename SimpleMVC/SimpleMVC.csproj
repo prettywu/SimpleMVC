@@ -174,9 +174,11 @@
     <Content Include="charts.html" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\font-lnr.css" />
     <Content Include="Content\Site.css" />
     <Content Include="elements.html" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="fonts\Linearicons-Free.svg" />
     <Content Include="Global.asax" />
     <Content Include="icons.html" />
     <Content Include="index.html" />
@@ -207,11 +209,16 @@
     <Content Include="assets\vendor\linearicons\fonts\Linearicons-Free.woff2" />
     <Content Include="assets\css\demo.css.map" />
     <Content Include="assets\css\main.css.map" />
+    <Content Include="fonts\Linearicons-Free.eot" />
+    <Content Include="fonts\Linearicons-Free.ttf" />
+    <Content Include="fonts\Linearicons-Free.woff" />
+    <Content Include="fonts\Linearicons-Free.woff2" />
     <None Include="Properties\PublishProfiles\web.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.slimscroll.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -234,6 +241,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\TestController.cs" />
     <Compile Include="DAL\LoginService.cs" />
     <Compile Include="DAL\RoleService.cs" />
     <Compile Include="DAL\UserService.cs" />
@@ -277,6 +285,8 @@
     <Content Include="Views\Admin\UserManagement.cshtml" />
     <Content Include="Views\Admin\MyAccount.cshtml" />
     <Content Include="Views\Admin\ReSetPassword.cshtml" />
+    <Content Include="Views\Shared\_Layout_test.cshtml" />
+    <Content Include="Views\Test\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
