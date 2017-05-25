@@ -172,6 +172,7 @@
     <Content Include="assets\vendor\toastr\toastr.min.css" />
     <Content Include="assets\vendor\toastr\toastr.min.js" />
     <Content Include="charts.html" />
+    <Content Include="Content\bootstrap-table.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\font-lnr.css" />
@@ -187,6 +188,7 @@
     <Content Include="page-login.html" />
     <Content Include="page-profile.html" />
     <Content Include="panels.html" />
+    <Content Include="Scripts\bootstrap-table.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="assets\vendor\bootstrap\fonts\glyphicons-halflings-regular.eot" />
@@ -213,6 +215,7 @@
     <Content Include="fonts\Linearicons-Free.ttf" />
     <Content Include="fonts\Linearicons-Free.woff" />
     <Content Include="fonts\Linearicons-Free.woff2" />
+    <Content Include="data.json" />
     <None Include="Properties\PublishProfiles\web.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />

@@ -3,6 +3,108 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout_test.cshtml";
 }
+@section styles{
+    <link href="~/Content/bootstrap-table.css" rel="stylesheet" />
+    <style>
+        table tr td > img {
+            width: 50px;
+            height: 50px;
+        }
+    </style>
 
-<h2>Index</h2>
+}
+<div class="panel">
+    <div class="panel-heading">
+        <h3 class="">管理中心</h3>
+        <p class="panel-subtitle text-muted">Period: Oct 14, 2016 - Oct 21, 2016</p>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="metric">
+                    <span class="icon"><i class="fa fa-download"></i></span>
+                    <p>
+                        <span class="number">1,252</span>
+                        <span class="title">Downloads</span>
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="metric">
+                    <span class="icon"><i class="fa fa-shopping-bag"></i></span>
+                    <p>
+                        <span class="number">203</span>
+                        <span class="title">Sales</span>
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="metric">
+                    <span class="icon"><i class="fa fa-eye"></i></span>
+                    <p>
+                        <span class="number">274,678</span>
+                        <span class="title">Visits</span>
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="metric">
+                    <span class="icon"><i class="fa fa-bar-chart"></i></span>
+                    <p>
+                        <span class="number">35%</span>
+                        <span class="title">Conversions</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <table id="table">
+            @*<thead>
+                <tr>
+                    <th data-field="">#</th>
+                    <th data-field="headimage" data-sortable="true">头像</th>
+                    <th data-field="username" data-sortable="true">用户名</th>
+                    <th data-field="nickname" data-sortable="true">昵称</th>
+                    <th data-field="role" data-sortable="true">角色</th>
+                    <th data-field="state">状态</th>
+                    <th data-field="">操作</th>
+                </tr>
+            </thead>*@
+            
+        </table>
+    </div>
+    
+</div>
+
+@section scripts{
+    <script src="~/Scripts/bootstrap-table.js"></script>
+    <script>
+        $('#table').bootstrapTable({
+            data: '/data.json',
+            classes: '',
+            columns: [
+                {
+                    "title":"头像",
+                    "field": "headimage"
+                },
+                {
+                    "title": "用户名",
+                    "field": "username"
+                },
+                {
+                    "title": "昵称",
+                    "field": "nickname"
+                },
+                {
+                    "title": "角色",
+                    "field": "role"
+                },
+                {
+                    "title": "状态",
+                    "field": "state"
+                }
+            ]
+        });
+
+    </script>
+}
 

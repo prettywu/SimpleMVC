@@ -14,7 +14,12 @@
     <link rel="icon" type="image/png" sizes="96x96" href="/assets/img/favicon.png">
     <style>
         body {
-            padding-top: 30px;
+            padding-top: 50px;
+            background-color:#f5f5fa;
+        }
+
+        #layout-navbar {
+            background-color: white;
         }
 
         #sidebar-nav {
@@ -24,11 +29,12 @@
             -o-transition: all 0.3s ease-in-out;
             transition: all 0.3s ease-in-out;
             width: 260px;
-            height: 100%;
+            height: calc(100% - 50px);
             float: left;
             background-color: #2B333E;
             position: fixed;
             left: 0;
+            padding-bottom: 20px;
         }
 
         .nav i {
@@ -96,8 +102,29 @@
             transform: rotate(-90deg);
         }
 
-        .collapse > .nav > li > a {
+        .nav .nav > li > a {
             padding-left: 60px;
+        }
+
+        .main {
+            -webkit-transition: all 0.3s ease-in-out;
+            -moz-transition: all 0.3s ease-in-out;
+            -ms-transition: all 0.3s ease-in-out;
+            -o-transition: all 0.3s ease-in-out;
+            transition: all 0.3s ease-in-out;
+            width: calc(100% - 260px);
+            left: 0;
+            position: relative;
+            float: right;
+                padding: 15px;
+        }
+
+        footer {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            padding-top: 15px;
+            padding-bottom: 10px;
         }
     </style>
     @RenderSection("styles", required: false)
@@ -112,7 +139,7 @@
         </nav>
         <!-- END NAVBAR -->
         <!-- LEFT SIDEBAR -->
-        <div id="sidebar-nav" class="sidebar scrollable">
+        <div id="sidebar-nav" class="sidebar">
             <div class="sidebar-scroll">
                 <nav>
                     <ul class="nav">
@@ -168,7 +195,7 @@
                         <li><a href="~/Admin/icons" class=""><i class="lnr lnr-linearicons"></i> <span>Icons</span></a></li>
                     </ul>
                 </nav>
-                
+
             </div>
         </div>
         <!-- END LEFT SIDEBAR -->
@@ -196,7 +223,7 @@
     <script>
         $(function () {
             $('.sidebar-scroll').slimScroll({
-                height:'auto',
+                height: 'auto',
                 color: '#00AAFF'
             });
         });
