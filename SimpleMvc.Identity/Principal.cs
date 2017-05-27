@@ -1,20 +1,24 @@
 ﻿
+using System;
 using System.Security.Principal;
 
 namespace SimpleMvc.Identity
 {
     public class Principal : IPrincipal
     {
-        public SimpleIdentity _identity;
+        private Func<string, bool> _IsInRole;
+
+        private SimpleIdentity _identity;
 
         public Principal(SimpleIdentity identity)
         {
             _identity = identity;
         }
 
-        public Principal(string token, object user)
+        public Principal(string token, object user, Func<string, bool> _isInRole=null)
         {
             _identity = new SimpleIdentity(token, user);
+            _IsInRole = _isInRole;
         }
 
         public IIdentity Identity
@@ -35,7 +39,8 @@ namespace SimpleMvc.Identity
 
         public bool IsInRole(string role)
         {
-            return true;
+            if (_IsInRole == null) return true;
+            return _IsInRole(role);
         }
 
     }

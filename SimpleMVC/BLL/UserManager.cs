@@ -4,6 +4,7 @@ using SimpleMVC.Entitys;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Web;
 
@@ -75,6 +76,19 @@ namespace SimpleMVC.BLL
             return UserService.AddUser(user) > 0;
         }
 
+        public List<User> SearchUsers(int page=1,int pagesize=10)
+        {
 
+            return null;
+        }
+
+        public List<T> getPageDate<T, TKey>(Expression<Func<T, bool>> where, Expression<Func<T, TKey>> order, int pageIndex, int pageSize, out int Total)
+         where T : class
+        {
+            var db = new EFDbContext();
+            Total = db.Set<T>().Where(where).Count();
+            var list = db.Set<T>().Where(where).OrderByDescending(order).Skip((pageIndex - 1) * pageSize).Take(pageSize);
+            return list.ToList();
+        }
     }
 }

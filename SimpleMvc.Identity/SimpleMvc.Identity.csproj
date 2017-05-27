@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdminAuthenticationAttribute.cs" />
     <Compile Include="AuthenticationAttribute.cs" />
     <Compile Include="SimpleAuthentication.cs" />
     <Compile Include="Principal.cs" />

@@ -10,6 +10,7 @@ using System.Web;
 using System.Web.Mvc;
 using static SimpleMVC.Entitys.Enums;
 using SimpleMvc.Identity;
+using System.Linq.Expressions;
 
 namespace SimpleMVC.Controllers
 {
@@ -109,7 +110,18 @@ namespace SimpleMVC.Controllers
             return View(model);
         }
 
-       
+        
+        public JsonResult GetUserList(string username,string nickname,int role=0,int state=0,int page=1,int pagesize=10)
+        {
+            Expression<Func<User, bool>> select = u => u.UserName == username && u.NickName == nickname;
+            Expression<Func<User, DateTime>> sort = u => u.RegistTime;
+            int total = 0;
+            var user = userManager.getPageDate<User, DateTime>(select, sort, 1, 10, out total);
+            return new JsonResult()
+            {
+                Data = user
+            };
+        }
         #endregion
 
 

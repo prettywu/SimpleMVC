@@ -12,11 +12,13 @@ namespace SimpleMvc.Identity
         private const int cookie_expires = 1;//单位：小时
 
         private static Func<string, object> getUsercallback;
+        private static Func<string, bool> isInRole;
 
 
-        public static void Create(Func<string, object> func_getUser)
+        public static void Create(Func<string, object> func_getUser, Func<string, bool> func_isInrole=null)
         {
             getUsercallback = func_getUser;
+            isInRole = func_isInrole;
         }
 
 
@@ -60,9 +62,11 @@ namespace SimpleMvc.Identity
                 if (getUsercallback != null)
                     user = getUsercallback(token);
 
-                Principal principal = new Principal(token, user);
-                context.Context.User = principal;
-
+                if (user != null)
+                {
+                    Principal principal = new Principal(token, user, isInRole);
+                    context.Context.User = principal;
+                }
             }
         }
     }
