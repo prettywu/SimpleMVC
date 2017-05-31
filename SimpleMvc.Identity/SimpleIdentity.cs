@@ -12,13 +12,12 @@ namespace SimpleMvc.Identity
         private object _user;
         private string _token;
 
-        public SimpleIdentity(string token,object user)
+        public SimpleIdentity(string token, object user)
         {
             _token = token;
             _user = user;
         }
-
-
+        
         public string AuthenticationType
         {
             get
@@ -44,5 +43,10 @@ namespace SimpleMvc.Identity
         }
 
         public object User { get { return _user; } }
+
+        public T GetUser<T>() where T : class
+        {
+            return _user as T;
+        }
     }
 }

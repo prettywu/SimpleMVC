@@ -14,7 +14,7 @@ using System.Linq.Expressions;
 
 namespace SimpleMVC.Controllers
 {
-    [Authorize]
+    [Authentication]
     public class AdminController : Controller
     {
         public UserManager userManager = new UserManager();
@@ -22,6 +22,16 @@ namespace SimpleMVC.Controllers
         #region Views
         // GET: Admin
         public ActionResult Index()
+        {
+            return View();
+        }
+
+        public ViewResult Unauthorized()
+        {
+            return View();
+        }
+
+        public ViewResult Unauthenticate()
         {
             return View();
         }
@@ -36,12 +46,14 @@ namespace SimpleMVC.Controllers
         {
             return View();
         }
-        
+
+        [SimpleAuthorize(Roles = "User")]
         public ViewResult UserManagement()
         {
             return View();
         }
 
+        [SimpleAuthorize(Roles = "Admin")]
         public ViewResult MyAccount()
         {
             var user = User.GetEntity().GetUserInfo<User>();
@@ -110,17 +122,44 @@ namespace SimpleMVC.Controllers
             return View(model);
         }
 
-        
-        public JsonResult GetUserList(string username,string nickname,int role=0,int state=0,int page=1,int pagesize=10)
+        [AllowAnonymous]
+        public JsonResult GetUserList(string username = "", string nickname = "", string sortname = "RegistTime", int role = 0, int state = 0, int page = 1, int pagesize = 10)
         {
-            Expression<Func<User, bool>> select = u => u.UserName == username && u.NickName == nickname;
-            Expression<Func<User, DateTime>> sort = u => u.RegistTime;
-            int total = 0;
-            var user = userManager.getPageDate<User, DateTime>(select, sort, 1, 10, out total);
-            return new JsonResult()
+            try
             {
-                Data = user
-            };
+                Expression<Func<User, bool>> select = null;
+                
+                if (!string.IsNullOrEmpty(username))
+                {
+                    if (!string.IsNullOrEmpty(nickname))
+                    {
+                        select = u => u.UserName.Contains(username) && u.NickName.Contains(nickname);
+                    }
+                    else
+                    {
+                        select = u => u.UserName.Contains(username);
+                    }
+                }
+
+                Expression<Func<User, object>> sort = u => u.RegistTime;
+                if (!string.IsNullOrEmpty(sortname))
+                {
+                    var proprety = typeof(User).GetProperty(sortname);
+                    sort = u => proprety.GetValue(u);
+                }
+
+                int total = 0;
+                var users = userManager.getPageDate(select, sort, page, pagesize, out total);
+                return new JsonPage(page, pagesize, total, JsonRequestBehavior.AllowGet)
+                {
+                    data = users
+                };
+            }
+            catch (Exception e)
+            {
+                return new Json();
+            }
+
         }
         #endregion
 
@@ -131,5 +170,7 @@ namespace SimpleMVC.Controllers
             Response.Cookies.Add(new HttpCookie("error") { Value = HttpUtility.UrlEncode(e.Message, Encoding.Default) });
             ModelState.AddModelError("", e);
         }
+
+
     }
 }

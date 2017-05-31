@@ -19,8 +19,8 @@ namespace SimpleMVC
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            SimpleAuthentication.Create(UserManager.GetTokenByToken);
-
+            SimpleAuthentication.Create(UserManager.GetTokenByToken,UserManager.IsInRole);
+           
 
             Database.SetInitializer<EFDbContext>(new DbInitilize());
             //using (var context = new EFDbContext())

@@ -31,20 +31,20 @@ namespace SimpleMVC.BLL
             if (string.IsNullOrEmpty(token)) return null;
             using (var context = new EFDbContext())
             {
-                var login= context.Logins.Where(l => l.Id == new Guid(token)).FirstOrDefault();
+                var login = context.Logins.Where(l => l.Id == new Guid(token)).FirstOrDefault();
                 if (login != null)
                 {
                     return context.Users.Where(u => u.Id == login.UserId).FirstOrDefault();
                 }
                 return null;
             }
-            
+
         }
 
         public Login GetLoginByLoginId(string loginId)
         {
             if (string.IsNullOrEmpty(loginId)) return null;
-            using (var context=new EFDbContext())
+            using (var context = new EFDbContext())
             {
                 return context.Logins.Where(l => l.Id == new Guid(loginId)).FirstOrDefault();
             }
@@ -60,7 +60,7 @@ namespace SimpleMVC.BLL
             }
             return null;
         }
-        
+
         public bool WriteLoginInfo(Login login)
         {
             return LoginService.AddLogin(login) > 0;
@@ -71,24 +71,58 @@ namespace SimpleMVC.BLL
             return RoleService.GetUserRoles(userId);
         }
 
+        public static bool IsInRole(string roles, object user)
+        {
+            User _user = user as User;
+            var _roles = RoleService.GetUserRoles(_user.Id);
+            if (_roles.Any())
+            {
+                var intersect = _roles.Select(r => r.RoleName).Intersect(roles.Split(new char[] { ',' }));
+                if (intersect.Any())
+                    return true;
+            }
+            return false;
+        }
+
         public bool RegistNewUser(User user)
         {
             return UserService.AddUser(user) > 0;
         }
 
-        public List<User> SearchUsers(int page=1,int pagesize=10)
-        {
-
-            return null;
-        }
-
         public List<T> getPageDate<T, TKey>(Expression<Func<T, bool>> where, Expression<Func<T, TKey>> order, int pageIndex, int pageSize, out int Total)
          where T : class
         {
-            var db = new EFDbContext();
-            Total = db.Set<T>().Where(where).Count();
-            var list = db.Set<T>().Where(where).OrderByDescending(order).Skip((pageIndex - 1) * pageSize).Take(pageSize);
-            return list.ToList();
+            IQueryable<T> list;
+            List<T> result;
+            using(var context=new EFDbContext())
+            {
+                if (where != null)
+                {
+                    Total = context.Set<T>().Where(where).Count();
+                    if (order != null)
+                    {
+                        list=context.Set<T>().Where(where).OrderByDescending(order).Skip((pageIndex - 1) * pageSize).Take(pageSize);
+                    }
+                    else
+                    {
+                        list = context.Set<T>().Where(where).Skip((pageIndex - 1) * pageSize).Take(pageSize);
+                    }
+                }
+                else
+                {
+                    Total = context.Set<T>().Count();
+                    if (order != null)
+                    {
+                        list = context.Set<T>().OrderByDescending(order).Skip((pageIndex - 1) * pageSize).Take(pageSize);
+                    }
+                    else
+                    {
+                        list = context.Set<T>().Skip((pageIndex - 1) * pageSize).Take(pageSize);
+                    }
+                }
+                result = list.ToList();
+            }
+            return result;
         }
     }
 }

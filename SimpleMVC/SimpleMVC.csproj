@@ -290,6 +290,8 @@
     <Content Include="Views\Admin\ReSetPassword.cshtml" />
     <Content Include="Views\Shared\_Layout_test.cshtml" />
     <Content Include="Views\Test\Index.cshtml" />
+    <Content Include="Views\Admin\Unauthorized.cshtml" />
+    <Content Include="Views\Admin\Unauthenticate.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

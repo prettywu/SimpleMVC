@@ -6,7 +6,7 @@ namespace SimpleMvc.Identity
 {
     public class Principal : IPrincipal
     {
-        private Func<string, bool> _IsInRole;
+        private Func<string,object, bool> _IsInRole;
 
         private SimpleIdentity _identity;
 
@@ -15,7 +15,7 @@ namespace SimpleMvc.Identity
             _identity = identity;
         }
 
-        public Principal(string token, object user, Func<string, bool> _isInRole=null)
+        public Principal(string token, object user, Func<string,object, bool> _isInRole = null)
         {
             _identity = new SimpleIdentity(token, user);
             _IsInRole = _isInRole;
@@ -39,8 +39,15 @@ namespace SimpleMvc.Identity
 
         public bool IsInRole(string role)
         {
-            if (_IsInRole == null) return true;
-            return _IsInRole(role);
+            if (_IsInRole == null)
+            {
+                if (!string.IsNullOrEmpty(role)) return false;
+                else return true;
+            }
+            else
+            {
+                return _IsInRole(role, _identity.User);
+            }
         }
 
     }
@@ -52,7 +59,7 @@ namespace SimpleMvc.Identity
             return iprincipal as T;
         }
 
-        public static Principal GetEntity(this IPrincipal iprincipal) 
+        public static Principal GetEntity(this IPrincipal iprincipal)
         {
             return iprincipal as Principal;
         }
