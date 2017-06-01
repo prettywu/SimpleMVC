@@ -171,23 +171,14 @@
     <Content Include="assets\vendor\toastr\toastr.js" />
     <Content Include="assets\vendor\toastr\toastr.min.css" />
     <Content Include="assets\vendor\toastr\toastr.min.js" />
-    <Content Include="charts.html" />
     <Content Include="Content\bootstrap-table.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\font-lnr.css" />
     <Content Include="Content\Site.css" />
-    <Content Include="elements.html" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="fonts\Linearicons-Free.svg" />
     <Content Include="Global.asax" />
-    <Content Include="icons.html" />
-    <Content Include="index.html" />
-    <Content Include="notifications.html" />
-    <Content Include="page-lockscreen.html" />
-    <Content Include="page-login.html" />
-    <Content Include="page-profile.html" />
-    <Content Include="panels.html" />
     <Content Include="Scripts\bootstrap-table.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -215,7 +206,6 @@
     <Content Include="fonts\Linearicons-Free.ttf" />
     <Content Include="fonts\Linearicons-Free.woff" />
     <Content Include="fonts\Linearicons-Free.woff2" />
-    <Content Include="data.json" />
     <None Include="Properties\PublishProfiles\web.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -230,37 +220,24 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <None Include="Scripts\_references.js" />
-    <Content Include="tables.html" />
-    <Content Include="typography.html" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="BLL\AuthManager.cs" />
-    <Compile Include="BLL\UserManager.cs" />
-    <Compile Include="Common\MvcHelper.cs" />
-    <Compile Include="Common\Json.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\TestController.cs" />
-    <Compile Include="DAL\LoginService.cs" />
-    <Compile Include="DAL\RoleService.cs" />
-    <Compile Include="DAL\UserService.cs" />
-    <Compile Include="EFDbContext.cs" />
-    <Compile Include="Entitys\Enums.cs" />
-    <Compile Include="Entitys\Login.cs" />
-    <Compile Include="Entitys\Role.cs" />
-    <Compile Include="Entitys\User.cs" />
-    <Compile Include="Entitys\UserRole.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\AdminLoginModel.cs" />
-    <Compile Include="Models\LoginModel.cs" />
-    <Compile Include="Models\RegisterModel.cs" />
+    <Compile Include="Models\UserModel.cs" />
+    <Compile Include="ViewModels\AdminLoginViewModel.cs" />
+    <Compile Include="ViewModels\LoginViewModel.cs" />
+    <Compile Include="ViewModels\RegisterViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\UserSearchViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
@@ -303,6 +280,22 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SimpleMvc.Business\SimpleMvc.Business.csproj">
+      <Project>{4320f783-cce1-4ad9-9007-291eac5ac8c3}</Project>
+      <Name>SimpleMvc.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SimpleMvc.Common\SimpleMvc.Common.csproj">
+      <Project>{abf99c85-f0c4-4277-b908-751a346416a2}</Project>
+      <Name>SimpleMvc.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SimpleMvc.DLL\SimpleMvc.DAL.csproj">
+      <Project>{ee8a66e4-10b7-404c-b3da-e2f1120b0f4e}</Project>
+      <Name>SimpleMvc.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SimpleMvc.Entitys\SimpleMvc.Entitys.csproj">
+      <Project>{94aee5f4-72e6-4e27-8373-404c3d6f75ee}</Project>
+      <Name>SimpleMvc.Entitys</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SimpleMvc.Identity\SimpleMvc.Identity.csproj">
       <Project>{3a7432fe-f3be-4408-aadb-a16f43bf9827}</Project>
       <Name>SimpleMvc.Identity</Name>

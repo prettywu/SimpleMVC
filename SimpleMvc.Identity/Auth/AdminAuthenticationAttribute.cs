@@ -23,11 +23,7 @@ namespace SimpleMvc.Identity
                 IPrincipal identity = filterContext.Principal;
                 if (!identity.Identity.IsAuthenticated)
                 {
-                    filterContext.Result = new ViewResult
-                    {
-                        ViewName = "~/Views/Admin/Unauthenticate.cshtml",
-                    };
-                    filterContext.HttpContext.Response.StatusCode = 401;
+                    filterContext.Result = new RedirectResult("/Admin/Login");
                 }
             }
 

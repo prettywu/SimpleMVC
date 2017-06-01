@@ -1,21 +1,20 @@
-﻿using SimpleMVC.BLL;
-using SimpleMVC.Common;
-using SimpleMVC.Entitys;
-using SimpleMVC.Models;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
-using static SimpleMVC.Entitys.Enums;
 using SimpleMvc.Identity;
+using SimpleMVC.ViewModels;
+using SimpleMvc.Entitys;
+using static SimpleMvc.Entitys.Enums;
+using SimpleMvc.Common;
+using SimpleMvc.DAL;
 
 namespace SimpleMVC.Controllers
 {
     public class AccountController : Controller
     {
-        public UserManager userManager = new UserManager();
+        public DbService userManager = new DbService();
 
         // GET: Account
         public ActionResult Index()
@@ -39,58 +38,9 @@ namespace SimpleMVC.Controllers
             return View();
         }
 
-        //[HttpPost]
-        //public ActionResult Login(LoginModel model)
-        //{
-        //    if (!ModelState.IsValid)
-        //        return new Json
-        //        {
-        //            isSuccess = false,
-        //            code = 100,
-        //            message = ModelState.FirstOrDefault().Value.Errors.FirstOrDefault().ErrorMessage
-        //        };
-        //    try
-        //    {
-        //        var user = userManager.LoginPasswordCheck(model.UserName, model.Password);
-        //        if (user == null)
-        //            return new Json
-        //            {
-        //                isSuccess = false,
-        //                code = 100,
-        //                message = "用户名或密码错误"
-        //            };
-
-        //        var login = new Login
-        //        {
-        //            UserId = user.Id,
-        //            LoginTime = DateTime.Now,
-        //            IP = MvcHelper.GetHostAddress(),
-        //            AuthType = (int)AuthType.站内,
-        //            DeviceType = (int)DeviceType.WebBrowser
-        //        };
-        //        userManager.WriteLoginInfo(login);
-        //        AuthManager.SignIn(login.Id.ToString());
-        //        return new Json
-        //        {
-        //            isSuccess = true,
-        //            code = 0,
-        //            message = "登录成功"
-        //        };
-        //    }
-        //    catch(Exception e)
-        //    {
-        //        Response.Cookies.Add(new HttpCookie("error") { Value = HttpUtility.UrlEncode(e.Message,Encoding.Default)});
-        //        return new Json
-        //        {
-        //            isSuccess = true,
-        //            code = 999,
-        //            message = "系统异常"
-        //        };
-        //    }
-        //}
-
+        
         [HttpPost]
-        public ActionResult Login(LoginModel model)
+        public ActionResult Login(LoginViewModel model)
         {
             if (!ModelState.IsValid)
                 return View(model);
@@ -103,12 +53,12 @@ namespace SimpleMVC.Controllers
                     {
                         UserId = user.Id,
                         LoginTime = DateTime.Now,
-                        IP = MvcHelper.GetHostAddress(),
+                        IP = Helper.GetHostAddress(),
                         AuthType = (int)AuthType.站内,
                         DeviceType = (int)DeviceType.WebBrowser
                     };
                     userManager.WriteLoginInfo(login);
-                    AuthManager.SignIn(user,login.Id.ToString());
+                    SimpleAuthentication.SignIn(user,login.Id.ToString());
                     return RedirectToAction("Account", "Account");
                 }
                 ModelState.AddModelError("", "用户名或密码错误");
@@ -121,7 +71,7 @@ namespace SimpleMVC.Controllers
         }
 
         [HttpPost]
-        public ActionResult Register(RegisterModel model)
+        public ActionResult Register(RegisterViewModel model)
         {
             if (!ModelState.IsValid)
                 return View(model);
@@ -134,7 +84,7 @@ namespace SimpleMVC.Controllers
                     var user = new User
                     {
                         UserName = model.UserName,
-                        PasswordHash = MvcHelper.MD5encryption(model.Password),
+                        PasswordHash = Helper.MD5encryption(model.Password),
                         NickName = model.NickName,
                         HeadImage = model.HeadImage,
                         Birthday = new DateTime(1990, 1, 29),
@@ -142,19 +92,19 @@ namespace SimpleMVC.Controllers
                         RegistTime = DateTime.Now,
                         LastUpdateTime = DateTime.Now
                     };
-                    if (userManager.RegistNewUser(user))
+                    if (userManager.AddUser(user))
                     {
                         //登录
                         var login = new Login
                         {
                             UserId = user.Id,
                             LoginTime = DateTime.Now,
-                            IP = MvcHelper.GetHostAddress(),
+                            IP = Helper.GetHostAddress(),
                             AuthType = (int)AuthType.站内,
                             DeviceType = (int)DeviceType.WebBrowser
                         };
                         userManager.WriteLoginInfo(login);      //记录登录记录
-                        AuthManager.SignIn(user,login.Id.ToString());//写入登录cookie
+                        SimpleAuthentication.SignIn(user,login.Id.ToString());//写入登录cookie
                         return RedirectToAction("Index", "Home");
                     }
                     else

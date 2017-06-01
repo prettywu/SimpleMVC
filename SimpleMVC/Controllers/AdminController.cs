@@ -1,23 +1,25 @@
-﻿using SimpleMVC.BLL;
-using SimpleMVC.Common;
-using SimpleMVC.Entitys;
-using SimpleMVC.Models;
+﻿
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
-using static SimpleMVC.Entitys.Enums;
 using SimpleMvc.Identity;
 using System.Linq.Expressions;
+using SimpleMVC.ViewModels;
+using SimpleMvc.Entitys;
+using SimpleMvc.Common;
+using static SimpleMvc.Entitys.Enums;
+using SimpleMvc.DAL;
 
 namespace SimpleMVC.Controllers
 {
     [Authentication]
     public class AdminController : Controller
     {
-        public UserManager userManager = new UserManager();
+        public DbService dbservice = new DbService();
 
         #region Views
         // GET: Admin
@@ -92,25 +94,25 @@ namespace SimpleMVC.Controllers
         #region Apis
         [HttpPost]
         [AllowAnonymous]
-        public ActionResult Login(AdminLoginModel model)
+        public ActionResult Login(AdminLoginViewModel model)
         {
             if (!ModelState.IsValid)
                 return View(model);
             try
             {
-                var user = userManager.LoginPasswordCheck(model.UserName, model.Password);
+                var user = dbservice.LoginPasswordCheck(model.UserName, model.Password);
                 if (user != null)
                 {
                     var login = new Login
                     {
                         UserId = user.Id,
                         LoginTime = DateTime.Now,
-                        IP = MvcHelper.GetHostAddress(),
+                        IP = Helper.GetHostAddress(),
                         AuthType = (int)AuthType.站内,
                         DeviceType = (int)DeviceType.WebBrowser
                     };
-                    userManager.WriteLoginInfo(login);
-                    AuthManager.SignIn(user, login.Id.ToString());
+                    dbservice.WriteLoginInfo(login);
+                    SimpleAuthentication.SignIn(user, login.Id.ToString());
                     return RedirectToAction("Index", "Admin");
                 }
                 ModelState.AddModelError("", "用户名或密码错误");
@@ -123,41 +125,48 @@ namespace SimpleMVC.Controllers
         }
 
         [AllowAnonymous]
-        public JsonResult GetUserList(string username = "", string nickname = "", string sortname = "RegistTime", int role = 0, int state = 0, int page = 1, int pagesize = 10)
+        public JsonResult GetUserList(UserSearchViewModel model)
         {
             try
             {
                 Expression<Func<User, bool>> select = null;
                 
-                if (!string.IsNullOrEmpty(username))
+                if (!string.IsNullOrEmpty(model.username))
                 {
-                    if (!string.IsNullOrEmpty(nickname))
+                    if (!string.IsNullOrEmpty(model.nickname))
                     {
-                        select = u => u.UserName.Contains(username) && u.NickName.Contains(nickname);
+                        select = u => u.UserName.Contains(model.username) && u.NickName.Contains(model.nickname);
                     }
                     else
                     {
-                        select = u => u.UserName.Contains(username);
+                        select = u => u.UserName.Contains(model.username);
                     }
                 }
 
-                Expression<Func<User, object>> sort = u => u.RegistTime;
-                if (!string.IsNullOrEmpty(sortname))
+                List<User> users;
+                int total = 0;
+                switch (model.sortname)
                 {
-                    var proprety = typeof(User).GetProperty(sortname);
-                    sort = u => proprety.GetValue(u);
+                    case "nickname":
+                        users = dbservice.getPageDate(select, u=>u.NickName, model.page, model.pagesize, out total);
+                        break;
+                    case "Birthday":
+                        users = dbservice.getPageDate(select, u => u.Birthday, model.page, model.pagesize, out total);
+                        break;
+                    case "Gender":
+                        users = dbservice.getPageDate(select, u => u.Gender, model.page, model.pagesize, out total);
+                        break;
+                    default:
+                        users = dbservice.getPageDate(select, u => u.RegistTime, model.page, model.pagesize, out total);
+                        break;
+
                 }
 
-                int total = 0;
-                var users = userManager.getPageDate(select, sort, page, pagesize, out total);
-                return new JsonPage(page, pagesize, total, JsonRequestBehavior.AllowGet)
-                {
-                    data = users
-                };
+                return new JsonPage(model.page, model.pagesize, total, users, JsonRequestBehavior.AllowGet);
             }
             catch (Exception e)
             {
-                return new Json();
+                return new Json(e.Message);
             }
 
         }
