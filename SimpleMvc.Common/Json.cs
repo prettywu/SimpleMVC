@@ -10,6 +10,12 @@ namespace SimpleMvc.Common
         public string message { get; set; }
         public object data { get; set; }
 
+        public Json()
+        {
+            isSuccess = true;
+            code = 0;
+        }
+
         public Json(string errormessage)
         {
             isSuccess = false;
@@ -73,6 +79,36 @@ namespace SimpleMvc.Common
                     total = _total,
                     list = _data
                 }
+            };
+            base.ExecuteResult(context);
+        }
+    }
+
+    public class JsonDataTable : JsonResult
+    {
+        public int draw { get; set; }
+        public int recordsTotal { get; set; }
+        public int recordsFiltered { get; set; }
+        public string error { get; set; }
+        public object data { get; set; }
+
+        public JsonDataTable(int draw, int total,int FilterTotal, object data, JsonRequestBehavior behavior = JsonRequestBehavior.AllowGet)
+        {
+            this.draw = draw;
+            this.recordsTotal = total;
+            this.recordsFiltered = FilterTotal;
+            this.data = data;
+        }
+
+        public override void ExecuteResult(ControllerContext context)
+        {
+            Data = new
+            {
+                draw = this.draw,
+                recordsTotal = this.recordsTotal,
+                recordsFiltered = this.recordsFiltered,
+                data = this.data,
+                error=this.error
             };
             base.ExecuteResult(context);
         }

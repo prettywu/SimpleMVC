@@ -1,0 +1,166 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>AdminLTE 2 | Log in</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.6 -->
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="/dist/css/AdminLTE.min.css">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="/plugins/iCheck/square/blue.css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body class="hold-transition login-page">
+    <div class="login-box">
+        <div class="login-logo">
+            <a href="/index2.html"><b>Admin</b>LTE</a>
+        </div>
+        <!-- /.login-logo -->
+        <div class="login-box-body">
+            <p class="login-box-msg">Sign in to start your session</p>
+            <form id="login_form" action="../../index2.html" method="post">
+                <div class="form-group has-feedback has-error">
+                    <input type="email" class="form-control" id="email" placeholder="Email">
+                    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                    <span class="help-block">Help block with error</span>
+                </div>
+                <div class="form-group has-feedback has-error">
+                    <input type="password" class="form-control" id="password" placeholder="Password">
+                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                    <span class="help-block"><i class="fa fa-times-circle-o"></i> Help block with error</span>
+                </div>
+                <div>
+                    <p class="text-red login-info">Text red to emphasize danger</p>
+                </div>
+                <div class="row">
+
+                    <div class="col-xs-8">
+                        <div class="checkbox icheck">
+                            <label>
+                                <input type="checkbox"> Remember Me
+                            </label>
+                        </div>
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-xs-4">
+                        <button type="button" class="btn btn-primary btn-block btn-flat" id="submit">Sign In</button>
+                    </div>
+                    <!-- /.col -->
+                </div>
+            </form>
+            <div class="social-auth-links text-center">
+                <p>- OR -</p>
+                <a href="#" class="btn btn-block btn-social btn-facebook btn-flat">
+                    <i class="fa fa-facebook"></i> Sign in using
+                    Facebook
+                </a>
+                <a href="#" class="btn btn-block btn-social btn-google btn-flat">
+                    <i class="fa fa-google-plus"></i> Sign in using
+                    Google+
+                </a>
+            </div>
+            <!-- /.social-auth-links -->
+            <a href="#">I forgot my password</a><br>
+            <a href="register.html" class="text-center">Register a new membership</a>
+        </div>
+        <!-- /.login-box-body -->
+    </div>
+    <!-- /.login-box -->
+    <!-- jQuery 2.2.3 -->
+    <script src="/plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <!-- Bootstrap 3.3.6 -->
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
+    <!-- iCheck -->
+    <script src="/plugins/iCheck/icheck.min.js"></script>
+    <script>
+        $(function () {
+            $('input').iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue',
+                increaseArea: '20%' // optional
+            });
+
+            $('#submit').click(function () {
+                if ($("#submit").hasClass("disabled")) return false;
+
+                var flag = true;
+                $("#login_form .form-group").removeClass("has-error");
+                $("#login_form .form-group>.help-block").remove();
+                var email = $("#email").val();
+                var password = $("#password").val();
+                if (!email) {
+                    showEmailError('请填写邮箱');
+                    flag = flag & false;
+                }
+                if (!password) {
+                    showPasswordError('请填写密码');
+                    flag = flag & false;
+                }
+                if (flag) {
+                    $("#submit").addClass("disabled");
+                    $(".login-info").text("");
+                    login(email, password);
+                }
+                else {
+                    return false;
+                }
+            });
+
+            $('#login_form input').blur(function () {
+                if ($(this).val()) {
+                    $(this).parent().find(".help-block").remove();
+                    $(this).parent().removeClass("has-error");
+                }
+            });
+
+            function showEmailError(message) {
+                $("#email").parent().addClass("has-error");
+                $("#email").parent().append('<span class="help-block"><i class="fa fa-times-circle-o"></i> ' + message + '</span>');
+            }
+            function showPasswordError(message) {
+                $("#password").parent().addClass("has-error");
+                $("#password").parent().append('<span class="help-block"><i class="fa fa-times-circle-o"></i> ' + message + '</span>');
+            }
+            function login(email, password) {
+                $.ajax({
+                    url: '/Test/Login',
+                    method: 'post',
+                    dataType: 'json',
+                    data: { 'UserName': email, 'Password': password },
+                    success: function (res) {
+                        $("#submit").removeClass("disabled");
+                        if (res && res.isSuccess) {
+                            window.location.href = '/Test/';
+                        }
+                        else {
+                            $(".login-info").text(res.message);
+                        }
+                    },
+                    error: function () {
+                        $("#submit").removeClass("disabled");
+                        $(".login-info").text("系统异常");
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
