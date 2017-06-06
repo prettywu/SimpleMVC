@@ -8,6 +8,8 @@ namespace SimpleMvc.Identity
 {
     public class AuthenticationAttribute : FilterAttribute, IAuthenticationFilter
     {
+        public bool DisLock { get; set; }
+
         public void OnAuthentication(AuthenticationContext filterContext)
         {
             if (filterContext == null)
@@ -16,14 +18,14 @@ namespace SimpleMvc.Identity
             }
             if (!filterContext.ActionDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true) && !filterContext.ActionDescriptor.ControllerDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true))
             {
-                IPrincipal identity = filterContext.Principal;
-                if (!identity.Identity.IsAuthenticated)
+                IPrincipal iprincipal = filterContext.Principal;
+                if (!iprincipal.Identity.IsAuthenticated)
                 {
-                    filterContext.Result = new ViewResult
-                    {
-                        ViewName = "~/Views/Admin/Unauthenticate.cshtml",
-                    };
-                    filterContext.HttpContext.Response.StatusCode = 401;
+                    filterContext.Result = new RedirectResult("/Test/Login");
+                }
+                else if (!DisLock && iprincipal.GetSimpleInstance().SimpleIdentity.IsLocked)
+                {
+                    filterContext.Result = new RedirectResult("/Test/Lock");
                 }
             }
 
@@ -36,7 +38,7 @@ namespace SimpleMvc.Identity
                 throw new ArgumentNullException("httpContext");
             }
         }
-        
-        
+
+
     }
 }

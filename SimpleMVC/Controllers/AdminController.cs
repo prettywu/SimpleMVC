@@ -58,7 +58,7 @@ namespace SimpleMVC.Controllers
         [SimpleAuthorize(Roles = "Admin")]
         public ViewResult MyAccount()
         {
-            var user = User.GetEntity().GetUserInfo<User>();
+            var user = User.GetSimpleInstance().GetUser<User>();
             return View(user);
         }
 

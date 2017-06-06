@@ -2,6 +2,7 @@
 using SimpleMvc.DAL;
 using SimpleMvc.Entitys;
 using SimpleMvc.Identity;
+using SimpleMVC.Models;
 using SimpleMVC.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -16,27 +17,47 @@ namespace SimpleMVC.Controllers
 {
     public class TestController : Controller
     {
-        public DbService dbservice = new DbService();
+        private DbService _dbservice = new DbService();
+
+        public DbService dbservice
+        {
+            get
+            {
+                if (_dbservice == null)
+                    _dbservice = new DbService();
+                return _dbservice;
+            }
+        }
 
         #region Views
         // GET: Test
+        [Authentication]
         public ActionResult Index()
         {
             return View();
         }
-
+        [Authentication]
         public ActionResult Test()
         {
             return View();
         }
-
+        [Authentication]
         public ActionResult Test2()
         {
             return View();
         }
 
-        public ViewResult Login()
+        public ActionResult Login()
         {
+            if (User.Identity.IsAuthenticated)
+                return RedirectToAction("Index", "Test");
+            return View();
+        }
+
+        [Authentication(DisLock =true)]
+        public ViewResult Lock()
+        {
+            SimpleAuthentication.LockOut();
             return View();
         }
         #endregion
@@ -47,7 +68,7 @@ namespace SimpleMVC.Controllers
         public ActionResult Login(AdminLoginViewModel model)
         {
             if (!ModelState.IsValid)
-                return new Json("参数错误");
+                return View(model);
             try
             {
                 var user = dbservice.LoginPasswordCheck(model.UserName, model.Password);
@@ -63,18 +84,43 @@ namespace SimpleMVC.Controllers
                     };
                     dbservice.WriteLoginInfo(login);
                     SimpleAuthentication.SignIn(user, login.Id.ToString());
-                    return new Json();
+                    return RedirectToAction("Index", "Test");
                 }
-                return new Json(false, 200, "用户名或密码错误", null);
+                ModelState.AddModelError("", "用户名或密码错误");
             }
             catch (Exception e)
             {
                 AddActionException(e);
-                return new Json(false, 999, "系统异常", null);
             }
+            return View(model);
         }
 
-        [AllowAnonymous]
+        [HttpPost]
+        [Authentication(DisLock =true)]
+        public ActionResult UnLock(string password,string backurl="/Test/index")
+        {
+            if (!string.IsNullOrEmpty(password))
+            {
+                var username = User.GetSimpleInstance().SimpleIdentity.GetUser<User>();
+                var user = dbservice.LoginPasswordCheck(username.UserName, password);
+                if (user != null)
+                {
+                    SimpleAuthentication.Unlock();
+                    return Redirect(backurl);
+                }
+                else
+                {
+                    ModelState.AddModelError("", "用户名或密码错误");
+                }
+            }
+            else
+            {
+                ModelState.AddModelError("", "参数不合法");
+            }
+            return View("~/Views/Test/Lock.cshtml");
+        }
+
+        [Authentication]
         public JsonResult GetUserList(UserSearchViewModel model)
         {
             try
@@ -94,6 +140,7 @@ namespace SimpleMVC.Controllers
                 }
 
                 List<User> users;
+                IEnumerable<UserModel> usermodels=null;
                 int total = 0;
                 switch (model.sortname)
                 {
@@ -112,7 +159,12 @@ namespace SimpleMVC.Controllers
 
                 }
 
-                return new JsonPage(model.page, model.pagesize, total, users, JsonRequestBehavior.AllowGet);
+                if (users != null)
+                {
+                    usermodels = users.Select(u => u.ConvertToModel());
+                }
+
+                return new JsonPage(model.page, model.pagesize, total, usermodels, JsonRequestBehavior.AllowGet);
             }
             catch (Exception e)
             {

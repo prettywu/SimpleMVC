@@ -11,11 +11,13 @@ namespace SimpleMvc.Identity
     {
         private object _user;
         private string _token;
+        private bool _islock;
 
-        public SimpleIdentity(string token, object user)
+        public SimpleIdentity(string token, object user,bool islock=false)
         {
             _token = token;
             _user = user;
+            _islock = islock;
         }
         
         public string AuthenticationType
@@ -32,6 +34,12 @@ namespace SimpleMvc.Identity
             {
                 return !string.IsNullOrEmpty(_token);
             }
+        }
+
+        public bool IsLocked
+        {
+            get { return _islock; }
+            internal set { _islock = value; }
         }
 
         public string Name

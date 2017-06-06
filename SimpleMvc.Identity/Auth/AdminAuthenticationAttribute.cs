@@ -20,10 +20,14 @@ namespace SimpleMvc.Identity
             }
             if (!filterContext.ActionDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true) && !filterContext.ActionDescriptor.ControllerDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true))
             {
-                IPrincipal identity = filterContext.Principal;
-                if (!identity.Identity.IsAuthenticated)
+                IPrincipal iprincipal = filterContext.Principal;
+                if (!iprincipal.Identity.IsAuthenticated)
                 {
-                    filterContext.Result = new RedirectResult("/Admin/Login");
+                    filterContext.Result = new RedirectResult("/Test/Login");
+                }
+                if (iprincipal.GetSimpleInstance().SimpleIdentity.IsLocked)
+                {
+                    filterContext.Result = new RedirectResult("/Test/Lock");
                 }
             }
 

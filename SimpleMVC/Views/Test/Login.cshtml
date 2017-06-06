@@ -36,19 +36,19 @@
         <!-- /.login-logo -->
         <div class="login-box-body">
             <p class="login-box-msg">Sign in to start your session</p>
-            <form id="login_form" action="../../index2.html" method="post">
-                <div class="form-group has-feedback has-error">
-                    <input type="email" class="form-control" id="email" placeholder="Email">
+            <form id="login_form" action="/Test/Login" method="post" onsubmit="return formCheck()">
+                <div class="form-group has-feedback">
+                    <input type="email" class="form-control" id="UserName" name="UserName" placeholder="Email">
                     <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-                    <span class="help-block">Help block with error</span>
+                   
                 </div>
-                <div class="form-group has-feedback has-error">
-                    <input type="password" class="form-control" id="password" placeholder="Password">
+                <div class="form-group has-feedback">
+                    <input type="password" class="form-control" id="Password" name="Password" placeholder="Password">
                     <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-                    <span class="help-block"><i class="fa fa-times-circle-o"></i> Help block with error</span>
+                  
                 </div>
                 <div>
-                    <p class="text-red login-info">Text red to emphasize danger</p>
+                    <p class="text-red login-info">@Html.ValidationMessage("")</p>
                 </div>
                 <div class="row">
 
@@ -61,7 +61,7 @@
                     </div>
                     <!-- /.col -->
                     <div class="col-xs-4">
-                        <button type="button" class="btn btn-primary btn-block btn-flat" id="submit">Sign In</button>
+                        <button type="submit" class="btn btn-primary btn-block btn-flat" id="submit">Sign In</button>
                     </div>
                     <!-- /.col -->
                 </div>
@@ -98,31 +98,7 @@
                 increaseArea: '20%' // optional
             });
 
-            $('#submit').click(function () {
-                if ($("#submit").hasClass("disabled")) return false;
-
-                var flag = true;
-                $("#login_form .form-group").removeClass("has-error");
-                $("#login_form .form-group>.help-block").remove();
-                var email = $("#email").val();
-                var password = $("#password").val();
-                if (!email) {
-                    showEmailError('请填写邮箱');
-                    flag = flag & false;
-                }
-                if (!password) {
-                    showPasswordError('请填写密码');
-                    flag = flag & false;
-                }
-                if (flag) {
-                    $("#submit").addClass("disabled");
-                    $(".login-info").text("");
-                    login(email, password);
-                }
-                else {
-                    return false;
-                }
-            });
+        
 
             $('#login_form input').blur(function () {
                 if ($(this).val()) {
@@ -131,36 +107,64 @@
                 }
             });
 
-            function showEmailError(message) {
-                $("#email").parent().addClass("has-error");
-                $("#email").parent().append('<span class="help-block"><i class="fa fa-times-circle-o"></i> ' + message + '</span>');
-            }
-            function showPasswordError(message) {
-                $("#password").parent().addClass("has-error");
-                $("#password").parent().append('<span class="help-block"><i class="fa fa-times-circle-o"></i> ' + message + '</span>');
-            }
-            function login(email, password) {
-                $.ajax({
-                    url: '/Test/Login',
-                    method: 'post',
-                    dataType: 'json',
-                    data: { 'UserName': email, 'Password': password },
-                    success: function (res) {
-                        $("#submit").removeClass("disabled");
-                        if (res && res.isSuccess) {
-                            window.location.href = '/Test/';
-                        }
-                        else {
-                            $(".login-info").text(res.message);
-                        }
-                    },
-                    error: function () {
-                        $("#submit").removeClass("disabled");
-                        $(".login-info").text("系统异常");
-                    }
-                });
-            }
+            
         });
+        function formCheck() {
+            if ($("#submit").hasClass("disabled")) return false;
+
+            var flag = true;
+            $("#login_form .form-group").removeClass("has-error");
+            $("#login_form .form-group>.help-block").remove();
+            var email = $("#UserName").val();
+            var password = $("#Password").val();
+            if (!email) {
+                showEmailError('请填写邮箱');
+                flag = flag & false;
+            }
+            if (!password) {
+                showPasswordError('请填写密码');
+                flag = flag & false;
+            }
+
+            if (flag) {
+                $("#submit").addClass("disabled");
+                $(".login-info").text("");
+                //login(email, password);
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        function showEmailError(message) {
+            $("#UserName").parent().addClass("has-error");
+            $("#UserName").parent().append('<span class="help-block"><i class="fa fa-times-circle-o"></i> ' + message + '</span>');
+        }
+        function showPasswordError(message) {
+            $("#Password").parent().addClass("has-error");
+            $("#Password").parent().append('<span class="help-block"><i class="fa fa-times-circle-o"></i> ' + message + '</span>');
+        }
+        function login(email, password) {
+            $.ajax({
+                url: '/Test/Login',
+                method: 'post',
+                dataType: 'json',
+                data: { 'UserName': email, 'Password': password },
+                success: function (res) {
+                    $("#submit").removeClass("disabled");
+                    if (res && res.isSuccess) {
+                        window.location.href = '/Test/';
+                    }
+                    else {
+                        $(".login-info").text(res.message);
+                    }
+                },
+                error: function () {
+                    $("#submit").removeClass("disabled");
+                    $(".login-info").text("系统异常");
+                }
+            });
+        }
     </script>
 </body>
 </html>

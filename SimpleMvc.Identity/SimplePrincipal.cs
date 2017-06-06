@@ -4,18 +4,19 @@ using System.Security.Principal;
 
 namespace SimpleMvc.Identity
 {
-    public class Principal : IPrincipal
+    public class SimplePrincipal : IPrincipal
     {
         private Func<string,object, bool> _IsInRole;
 
         private SimpleIdentity _identity;
 
-        public Principal(SimpleIdentity identity)
+        public SimplePrincipal(SimpleIdentity identity,Func<string, object, bool> _isInRole = null)
         {
             _identity = identity;
+            _IsInRole = _isInRole;
         }
 
-        public Principal(string token, object user, Func<string,object, bool> _isInRole = null)
+        public SimplePrincipal(string token, object user, Func<string,object, bool> _isInRole = null)
         {
             _identity = new SimpleIdentity(token, user);
             _IsInRole = _isInRole;
@@ -29,7 +30,12 @@ namespace SimpleMvc.Identity
             }
         }
 
-        public T GetUserInfo<T>() where T : class
+        public SimpleIdentity SimpleIdentity
+        {
+            get { return _identity; }
+        }
+
+        public T GetUser<T>() where T : class
         {
             if (_identity != null)
                 return _identity.User as T;
@@ -54,14 +60,9 @@ namespace SimpleMvc.Identity
 
     public static class IPrincipalExtense
     {
-        public static T GetEntity<T>(this IPrincipal iprincipal) where T : class
+        public static SimplePrincipal GetSimpleInstance(this IPrincipal iprincipal)
         {
-            return iprincipal as T;
-        }
-
-        public static Principal GetEntity(this IPrincipal iprincipal)
-        {
-            return iprincipal as Principal;
+            return iprincipal as SimplePrincipal;
         }
     }
 }

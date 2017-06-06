@@ -1272,6 +1272,7 @@
     <Content Include="Views\Test\Test.cshtml" />
     <Content Include="Views\Test\Test2.cshtml" />
     <Content Include="Views\Test\Login.cshtml" />
+    <Content Include="Views\Test\Lock.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
