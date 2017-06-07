@@ -144,27 +144,6 @@
             $("#Password").parent().addClass("has-error");
             $("#Password").parent().append('<span class="help-block"><i class="fa fa-times-circle-o"></i> ' + message + '</span>');
         }
-        function login(email, password) {
-            $.ajax({
-                url: '/Test/Login',
-                method: 'post',
-                dataType: 'json',
-                data: { 'UserName': email, 'Password': password },
-                success: function (res) {
-                    $("#submit").removeClass("disabled");
-                    if (res && res.isSuccess) {
-                        window.location.href = '/Test/';
-                    }
-                    else {
-                        $(".login-info").text(res.message);
-                    }
-                },
-                error: function () {
-                    $("#submit").removeClass("disabled");
-                    $(".login-info").text("系统异常");
-                }
-            });
-        }
     </script>
 </body>
 </html>

@@ -28,15 +28,15 @@ namespace SimpleMvc.Identity
             if (context.User != null && context.User.Identity != null && context.User.Identity.IsAuthenticated)
             {
 
-                HttpCookie cookie_auth = context.Response.Cookies[auth_key];
-                if (cookie_auth != null && !string.IsNullOrEmpty(cookie_auth.Value))
+                HttpCookie cookie_auth = context.Request.Cookies[auth_key];
+                if (cookie_auth != null)
                 {
                     if (cookie_auth.Value != context.User.Identity.Name)
                     {
                         cookie_auth.Value = context.User.Identity.Name;
-                        cookie_auth.Expires = DateTime.Now.AddDays(auth_expires);
-                        context.Response.Cookies.Set(cookie_auth);
                     }
+                    cookie_auth.Expires = DateTime.Now.AddDays(auth_expires);
+                    context.Response.Cookies.Set(cookie_auth);
                 }
                 else
                 {
@@ -56,11 +56,11 @@ namespace SimpleMvc.Identity
                 }
                 else
                 {
-                    HttpCookie cookie_lock;
+                    HttpCookie cookie_lock = context.Request.Cookies[lock_key];
 
-                    if (context.Response.Cookies[lock_key] != null)
+                    if (cookie_lock != null)
                     {
-                        cookie_lock = context.Response.Cookies[lock_key];
+                        cookie_lock.Value = "unlock";
                         cookie_lock.Expires = DateTime.Now.AddMinutes(lock_expires);
                         context.Response.Cookies.Set(cookie_lock);
                     }
@@ -73,7 +73,7 @@ namespace SimpleMvc.Identity
                             Path = cookie_path,
                             Expires = DateTime.Now.AddMinutes(lock_expires)
                         };
-                        context.Response.AppendCookie(cookie_lock);
+                        context.Response.Cookies.Add(cookie_lock);
                     }
                 }
             }
@@ -110,6 +110,10 @@ namespace SimpleMvc.Identity
                     Singout(context.Context);
                 }
             }
+            else
+            {
+                RemoveCookie(context.Context, lock_key);
+            }
         }
 
         public static void Singout(HttpContext context)
@@ -124,22 +128,22 @@ namespace SimpleMvc.Identity
             if (user != null)
             {
                 HttpContext.Current.User = new SimplePrincipal(token, user);
-                var cookie_auth = new HttpCookie(auth_key)
-                {
-                    Value = HttpContext.Current.User.Identity.Name,
-                    Domain = cookie_domain,
-                    Path = cookie_path,
-                    Expires = DateTime.Now.AddDays(auth_expires)
-                };
-                var cookie_lock = new HttpCookie(lock_key)
-                {
-                    Value = "unlock",
-                    Domain = cookie_domain,
-                    Path = cookie_path,
-                    Expires = DateTime.Now.AddMinutes(lock_expires)
-                };
-                HttpContext.Current.Response.AppendCookie(cookie_auth);
-                HttpContext.Current.Response.AppendCookie(cookie_lock);
+                //var cookie_auth = new HttpCookie(auth_key)
+                //{
+                //    Value = HttpContext.Current.User.Identity.Name,
+                //    Domain = cookie_domain,
+                //    Path = cookie_path,
+                //    Expires = DateTime.Now.AddDays(auth_expires)
+                //};
+                //var cookie_lock = new HttpCookie(lock_key)
+                //{
+                //    Value = "unlock",
+                //    Domain = cookie_domain,
+                //    Path = cookie_path,
+                //    Expires = DateTime.Now.AddMinutes(lock_expires)
+                //};
+                //HttpContext.Current.Response.AppendCookie(cookie_auth);
+                //HttpContext.Current.Response.AppendCookie(cookie_lock);
                 return true;
             }
             return false;
@@ -159,17 +163,19 @@ namespace SimpleMvc.Identity
 
         private static void RemoveCookie(HttpContext context, string key)
         {
-            if (context.Response.Cookies[key] != null)
+            if (context.Request.Cookies[key] != null)
             {
-                context.Response.Cookies[key].Expires = DateTime.Now.AddDays(-1);
+                var cookie = context.Request.Cookies[key];
+                cookie.Expires = DateTime.Now.AddDays(-1);
+                context.Response.SetCookie(cookie);
             }
             else
             {
-                var cookie = new HttpCookie(key)
-                {
-                    Expires = DateTime.Now.AddDays(-1)
-                };
-                context.Response.Cookies.Add(cookie);
+                //var cookie = new HttpCookie(key)
+                //{
+                //    Expires = DateTime.Now.AddDays(-1)
+                //};
+                //context.Response.Cookies.Add(cookie);
             }
         }
     }

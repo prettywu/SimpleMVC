@@ -25,7 +25,7 @@ namespace SimpleMvc.Identity
                 }
                 else if (!DisLock && iprincipal.GetSimpleInstance().SimpleIdentity.IsLocked)
                 {
-                    filterContext.Result = new RedirectResult("/Test/Lock");
+                    filterContext.Result = new RedirectResult("/Test/Lock?backurl="+filterContext.HttpContext.Request.Url.AbsoluteUri);
                 }
             }
 

@@ -21,6 +21,8 @@ namespace SimpleMVC.Models
 
         public string Gender { get; set; }
 
+        public string State { get; set; }
+
         public string LastUpdateTime { get; set; }
 
         public string RegistTime { get; set; }
@@ -40,6 +42,7 @@ namespace SimpleMVC.Models
                 HeadImage = user.HeadImage,
                 Birthday = user.Birthday.ToString("yyyy-MM-dd"),
                 Gender = Enum.GetName(typeof(Enums.Gender), user.Gender),
+                State=Enum.GetName(typeof(Enums.UserState),user.State),
                 LastUpdateTime = user.LastUpdateTime.ToString("yyyy-MM-dd HH:mm:ss"),
                 RegistTime = user.RegistTime.ToString("yyyy-MM-dd HH:mm:ss"),
                 IsDeleted = user.IsDeleted

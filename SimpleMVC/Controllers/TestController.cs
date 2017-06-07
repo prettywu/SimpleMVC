@@ -55,9 +55,10 @@ namespace SimpleMVC.Controllers
         }
 
         [Authentication(DisLock =true)]
-        public ViewResult Lock()
+        public ViewResult Lock(string backurl = "/Test/index")
         {
             SimpleAuthentication.LockOut();
+            ViewBag.backurl = backurl;
             return View();
         }
         #endregion

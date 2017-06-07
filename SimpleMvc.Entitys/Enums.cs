@@ -14,6 +14,15 @@ namespace SimpleMvc.Entitys
             Female = 2
         }
 
+        /// <summary>
+        /// 用户状态
+        /// </summary>
+        public enum UserState
+        {
+            正常=1,
+            冻结=2
+        }
+
         public enum AuthType
         {
             站内 = 0,

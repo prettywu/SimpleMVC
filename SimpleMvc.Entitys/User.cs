@@ -32,6 +32,8 @@ namespace SimpleMvc.Entitys
 
         public DateTime RegistTime { get; set; }
 
+        public int State { get; set; }
+
         [DefaultValue(false)]
         public bool IsDeleted { get; set; }
     }
