@@ -1,4 +1,5 @@
-﻿using SimpleMvc.Common;
+﻿using SimpleMvc.Business;
+using SimpleMvc.Common;
 using SimpleMvc.DAL;
 using SimpleMvc.Entitys;
 using SimpleMvc.Identity;
@@ -6,6 +7,7 @@ using SimpleMVC.Models;
 using SimpleMVC.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -54,12 +56,19 @@ namespace SimpleMVC.Controllers
             return View();
         }
 
-        [Authentication(DisLock =true)]
+        [Authentication(DisLock = true)]
         public ViewResult Lock(string backurl = "/Test/index")
         {
             SimpleAuthentication.LockOut();
             ViewBag.backurl = backurl;
             return View();
+        }
+
+        [Authentication]
+        public ActionResult Logout()
+        {
+            SimpleAuthentication.Singout();
+            return RedirectToAction("Login", "Test");
         }
         #endregion
 
@@ -97,8 +106,8 @@ namespace SimpleMVC.Controllers
         }
 
         [HttpPost]
-        [Authentication(DisLock =true)]
-        public ActionResult UnLock(string password,string backurl="/Test/index")
+        [Authentication(DisLock = true)]
+        public ActionResult UnLock(string password, string backurl = "/Test/index")
         {
             if (!string.IsNullOrEmpty(password))
             {
@@ -141,7 +150,7 @@ namespace SimpleMVC.Controllers
                 }
 
                 List<User> users;
-                IEnumerable<UserModel> usermodels=null;
+                IEnumerable<UserModel> usermodels = null;
                 int total = 0;
                 switch (model.sortname)
                 {
@@ -172,6 +181,59 @@ namespace SimpleMVC.Controllers
                 return new Json(e.Message);
             }
 
+        }
+
+        [HttpPost]
+        [Authentication]
+        public JsonResult AddUser(AddUserViewModel model)
+        {
+            try
+            {
+                var user = new User()
+                {
+                    UserName = model.email,
+                    PasswordHash = Helper.MD5encryption(model.email),
+                    NickName = model.nickname,
+                    Birthday = Convert.ToDateTime(model.birthday),
+                    Gender = model.gender,
+                    HeadImage = model.headimage,
+                    IsDeleted = false,
+                    State = 1,
+                    RegistTime = DateTime.Now,
+                    LastUpdateTime = DateTime.Now
+                };
+                bool result = new UserService().AddUser(user);
+
+                if (result)
+                    return new Json(true, 200, "添加用户成功");
+                else
+                    return new Json(false, 500, "添加用户失败");
+            }
+            catch (Exception e)
+            {
+                return new Json(false, 999, e.Message);
+            }
+
+        }
+
+        [HttpPost]
+        public ActionResult FileUpload()
+        {
+            HttpPostedFileBase file = Request.Files["file"];
+            if (file != null)
+            {
+                string filename = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                string directory = HttpContext.Server.MapPath("/HeadImages/");
+                string filePath = directory + filename;
+                if (!Directory.Exists(directory))
+                    Directory.CreateDirectory(directory);
+                file.SaveAs(filePath);
+                return new Json(true, 200, "上传成功", "/HeadImages/" + filename);
+            }
+            else
+            {
+                return new Json("上传失败");
+            }
         }
         #endregion
 

@@ -14,5 +14,10 @@ namespace SimpleMvc.Business
         {
             return new DbService().IsInRole(roles, user);
         }
+
+        public bool AddUser(User user)
+        {
+            return new DbService().AddUser(user);
+        }
     }
 }

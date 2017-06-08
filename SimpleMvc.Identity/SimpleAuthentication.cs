@@ -107,7 +107,7 @@ namespace SimpleMvc.Identity
                 }
                 else
                 {
-                    Singout(context.Context);
+                    Singout();
                 }
             }
             else
@@ -116,11 +116,11 @@ namespace SimpleMvc.Identity
             }
         }
 
-        public static void Singout(HttpContext context)
+        public static void Singout()
         {
-            context.User = null;
-            RemoveCookie(context, auth_key);
-            RemoveCookie(context, lock_key);
+            HttpContext.Current.User = null;
+            RemoveCookie(HttpContext.Current, auth_key);
+            RemoveCookie(HttpContext.Current, lock_key);
         }
 
         public static bool SignIn(object user, string token)

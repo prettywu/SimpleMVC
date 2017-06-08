@@ -23,7 +23,7 @@ namespace SimpleMvc.Common
             code = 500;
         }
 
-        public Json(bool success, int code, string message, object data, JsonRequestBehavior behavior = JsonRequestBehavior.AllowGet)
+        public Json(bool success, int code, string message, object data=null, JsonRequestBehavior behavior = JsonRequestBehavior.AllowGet)
         {
             isSuccess = success;
             this.code = code;
