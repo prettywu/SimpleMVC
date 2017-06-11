@@ -21,14 +21,14 @@ namespace SimpleMvc.DAL
                 new User
                 {
                      UserName = "yoyo@qq.com",
-                PasswordHash = Helper.MD5encryption("528888"),
-                NickName = "yoyo",
-                Birthday = new DateTime(1990, 12, 14),
+                    PasswordHash = Helper.MD5encryption("528888"),
+                    NickName = "yoyo",
+                    Birthday = new DateTime(1990, 12, 14),
                 Gender = (int)Gender.Female,
                 RegistTime = DateTime.Now.AddDays(-5),
                 LastUpdateTime = DateTime.Now,
                 State=1,
-                HeadImage = "http://img5.imgtn.bdimg.com/it/u=2056231335,4212597522&fm=23&gp=0.jpg"
+                HeadImage = "http://img.qqbody.com/uploads/allimg/201502/05-171941_803.jpg"
                 },
                 new User
             {
@@ -42,7 +42,6 @@ namespace SimpleMvc.DAL
                 State=1,
                 HeadImage = "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1495443056&di=49d076e75e1e4b4b6e5aaf2977e7626c&imgtype=jpg&er=1&src=http%3A%2F%2Fv1.qzone.cc%2Favatar%2F201303%2F18%2F17%2F14%2F5146daf314dfa660.jpg%21180x180.jpg",
             },
-
                 new User
                 {
                      UserName = "hui@qq.com",
@@ -81,25 +80,43 @@ namespace SimpleMvc.DAL
                 }
             };
             context.Users.AddRange(userlist);
-            var role = new Role
+            
+            var rolelist = new List<Role>()
             {
-                Id = 1,
-                RoleName = "Admin",
-                CreateTime = DateTime.Now
+                new Role{Id=1, RoleName="Admin", CreateTime=DateTime.Now,IsDeleted=false},
+                new Role{Id=2, RoleName="管理员", CreateTime=DateTime.Now,IsDeleted=false},
+                new Role{Id=3, RoleName="受害人", CreateTime=DateTime.Now,IsDeleted=false},
+                new Role{Id=4, RoleName="律师", CreateTime=DateTime.Now,IsDeleted=false},
+                new Role{Id=5, RoleName="听证员", CreateTime=DateTime.Now,IsDeleted=false}
             };
-            context.Roles.Add(role);
+            context.Roles.AddRange(rolelist);
             
             var userrolelist = new List<UserRole>()
             {
                 new UserRole
             {
                 UserId = userlist[0].Id,
-                RoleId = role.Id,
+                RoleId = 1,
             },
                 new UserRole
             {
                 UserId = userlist[1].Id,
-                RoleId = role.Id,
+                RoleId = 2,
+            },
+                new UserRole
+            {
+                UserId = userlist[2].Id,
+                RoleId = 3,
+            },
+                new UserRole
+            {
+                UserId = userlist[3].Id,
+                RoleId = 4,
+            },
+                new UserRole
+            {
+                UserId = userlist[4].Id,
+                RoleId = 5,
             }
             };
             context.UserRoles.AddRange(userrolelist);

@@ -8,6 +8,11 @@ namespace SimpleMvc.Entitys
 {
     public class Role
     {
+        public Role()
+        {
+            
+        }
+
         public int Id { get; set; }
 
         public string RoleName { get; set; }

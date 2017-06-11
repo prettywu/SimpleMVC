@@ -19,8 +19,7 @@ namespace SimpleMVC.Controllers
 {
     public class TestController : Controller
     {
-        private DbService _dbservice = new DbService();
-
+        private DbService _dbservice;
         public DbService dbservice
         {
             get
@@ -234,6 +233,12 @@ namespace SimpleMVC.Controllers
             {
                 return new Json("上传失败");
             }
+        }
+
+        [Authentication]
+        public JsonResult GetRoles()
+        {
+            return null;
         }
         #endregion
 
