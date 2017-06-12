@@ -4,5 +4,244 @@
     Layout = "~/Views/Shared/_Layout_test.cshtml";
 }
 
+@section styles{
+    <!-- iCheck -->
+    <link rel="stylesheet" href="/plugins/iCheck/flat/green.css">
+    <!-- DataTables -->
+    <link rel="stylesheet" href="/plugins/datatables/dataTables.bootstrap.css">
+    <!-- Daterange picker -->
+    <link rel="stylesheet" href="/plugins/daterangepicker/daterangepicker.css">
+    <!-- Date Picker -->
+    <link rel="stylesheet" href="/plugins/datepicker/datepicker3.css">
+    <link href="~/dist/css/bootstrapValidator.min.css" rel="stylesheet" />
+    <style>
+        .box-body > .box-widget {
+            margin-bottom: 0;
+        }
 
+        .headimage {
+            width: 50px;
+            height: 50px;
+        }
+
+        .table tr > th {
+            text-align: center;
+        }
+
+        .table tr > td {
+            vertical-align: middle !important;
+        }
+
+        .dataTables_length {
+            float: left;
+        }
+
+        #btn-search, #btn-refresh, #btn-add {
+            margin-top: 25px;
+        }
+
+        .radio-gender {
+            vertical-align: middle;
+            font-size: 16px;
+            font-weight: bold;
+            line-height: 34px;
+        }
+
+        #img-head {
+            width: 120px;
+            height: 120px;
+        }
+    </style>
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        测试页面主标题
+        <small>测试页面副标题</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i>测试模块</a></li>
+        <li class="active">测试首页</li>
+    </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <!-- Default box -->
+    <div class="box">
+        <div class="box-body">
+            <div class="box box-widget">
+                <div class="box-header with-border">
+                    <h3 class="box-title">案例</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                    <!-- /.box-tools -->
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-xs-2">
+                            <label for="exampleInputEmail1">编号</label>
+                            <input type="email" class="form-control input-sm" id="exampleInputEmail1" placeholder="昵称">
+                        </div>
+                        <div class="col-sm-2">
+                            <label for="exampleInputEmail1">标题</label>
+                            <input type="email" class="form-control input-sm " id="exampleInputEmail1" placeholder="昵称">
+                        </div>
+                        <div class="col-md-1">
+                            <label for="exampleInputEmail1">内容</label>
+                            <input type="email" class="form-control  input-sm" id="exampleInputEmail1" placeholder="昵称">
+                        </div>
+                        <div class="col-lg-1">
+                            <label for="exampleInputEmail1">状态</label>
+                            <select class="form-control input-sm">
+                                <option>男</option>
+                                <option>女</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-2">
+                            <label>添加时间</label>
+                            <div class="input-group">
+                                <div class="input-group-addon input-group-sm">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <input type="text" class="form-control input-sm pull-right" id="reservation2">
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <button type="button" class="btn btn-info btn-sm" id="btn-search">搜索</button>
+                            <button type="button" class="btn btn-info btn-sm" id="btn-refresh" title="刷新"><i class="fa fa-refresh"></i></button>
+                            <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#myModal" id="btn-add" title="添加用户"><i class="fa fa-plus"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <table id="example2" class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>编号</th>
+                        <th>标题</th>
+                        <th>类型</th>
+                        <th>添加时间</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+
+            </table>
+        </div>
+        <div class="box-footer">
+            Footer
+        </div>
+        <!-- /.box-footer-->
+    </div>
+    <!-- /.box -->
+</section>
+<!-- /.content -->
+
+@section scripts{
+    <!-- DataTables -->
+    <script src="/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="/plugins/datatables/dataTables.bootstrap.min.js"></script>
+    <!-- daterangepicker -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+    <script src="/plugins/daterangepicker/daterangepicker.js"></script>
+
+    <script>
+        var lawsuitTable;
+        $(function () {
+            //Date range picker
+            $('#reservation').daterangepicker();
+            $('#reservation2').daterangepicker();
+            
+            lawsuitTable=$('#example2').DataTable({
+                "paging": true,
+                "lengthChange": true,
+                "lengthMenu": [5, 10, 25, 50],
+                "searching": false,
+                "ordering": true,
+                "order": [[6, 'desc']],
+                "info": false,
+                "autoWidth": true,
+                "stateSave": false,
+                "serverSide": true,
+                "dom": 'tlp',
+                "select": 'single',
+                "columns": [
+                    { "data": "HeadImage"},
+                    { "data": "NickName" },
+                    { "data": "UserName" },
+                    { "data": "UserName" },
+                    { "data": "Birthday" },
+                    { "data": "Gender" },
+                    { "data": "RegistTime" },
+                    { "data": "State" },
+                    { "data": "Id", "render": renderOption }
+                ],
+                "columnDefs": [
+                    { "targets": [0, 1, 2, 8], "orderable": false },
+                    { "targets": [0], "render": function (data, type, row) { return '<img class="headimage" src="' + data + '"/>'; } },
+                    { "targets": [8], "render": renderOption }
+                ],
+                "ajax": {
+                    url: '/Test/GetUserList',
+                    data: function (d) {
+                        return {
+                            "page": d.start / d.length + 1,
+                            "pagesize": d.length
+                        }
+                    },
+                    dataFilter: function (data) {
+                        var json = jQuery.parseJSON(data);
+                        json.recordsTotal = json.data.total;
+                        json.recordsFiltered = json.data.total;
+                        json.data = json.data.list;
+
+                        return JSON.stringify(json); // return JSON string
+                    }
+                },
+                "pagingType": "full_numbers",
+                "language": {
+                    "paginate": {
+                        "first": "首页",
+                        "last": "末页",
+                        "previous": "上一页",
+                        "next": "下一页"
+                    }
+                }
+            });
+            lawsuitTable.on('select', function (e, dt, type, indexes) {
+                if (type === 'row') {
+                    var data = table.rows(indexes).data();
+                    alert(data.Id);
+                }
+            });
+            $('#btn-refresh').click(function () { $('#example2').DataTable().ajax.reload(null, false); });
+        });
+
+        function renderOption(data, type, row) {
+            var userid = data;
+            var nickname = row.NickName;
+            var ele = '<button type="button" class="btn btn-success btn-xs">通过</button>&nbsp;<button type="button" class="btn btn-danger btn-xs" onclick="FrozenAleart(\'' + userid + '\',\'' + nickname + '\')">否决</button>';
+            return ele;
+        }
+        function examineAleart(userid, nickname) {
+            $("#modal-text").text('确定要否决 ' + nickname + ' 吗？');
+            $("#frozenId").val(userid);
+            $("#frozenModal").modal("show");
+        }
+        function ExaminePass() {
+            $("#btn-frozen").addClass("disabled");
+        }
+        function EmamineVeto() {
+            $("#btn-frozen").addClass("disabled");
+        }
+      
+    </script>
+}
 

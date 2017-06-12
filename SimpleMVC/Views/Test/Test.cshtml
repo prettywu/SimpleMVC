@@ -284,18 +284,20 @@
                 "serverSide": true,
                 "dom": 'tlp',
                 "columns": [
-                    { "data": "HeadImage", "orderable": false, "render": function (data, type, row) { return '<img class="headimage" src="' + data + '"/>'; } },
-                    { "data": "NickName", "orderable": false },
-                    { "data": "UserName", "orderable": false },
+                    { "data": "HeadImage"},
+                    { "data": "NickName" },
+                    { "data": "UserName" },
                     { "data": "UserName" },
                     { "data": "Birthday" },
                     { "data": "Gender" },
                     { "data": "RegistTime" },
                     { "data": "State" },
-                    { "data": "Id", "orderable": false, "render": renderOption }
+                    { "data": "Id", "render": renderOption }
                 ],
                 "columnDefs": [
-                    { "targets": [0,1,2,8], "orderable": false }
+                    { "targets": [0, 1, 2, 8], "orderable": false },
+                    { "targets": [0], "render": function (data, type, row) { return '<img class="headimage" src="' + data + '"/>'; } },
+                    { "targets": [8], "render": renderOption }
                 ],
                 "ajax": {
                     url: '/Test/GetUserList',

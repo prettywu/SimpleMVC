@@ -48,6 +48,11 @@ namespace SimpleMVC.Controllers
             return View();
         }
 
+        public ViewResult LawsuitAdd()
+        {
+            return View();
+        }
+
         public ActionResult Login()
         {
             if (User.Identity.IsAuthenticated)

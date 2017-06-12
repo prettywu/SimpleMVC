@@ -14,7 +14,7 @@ namespace SimpleMvc.DAL
         /// <summary>
         /// 分页搜索
         /// </summary>
-        public List<T> getPageDate<T, TKey>(Expression<Func<T, bool>> where, Expression<Func<T, TKey>> order, int pageIndex, int pageSize, out int Total)
+        public List<T> getPageDate<T, TKey>(Expression<Func<T, bool>> where, Expression<Func<T, TKey>> order, int ordertype, int pageIndex, int pageSize, out int Total)
         where T : class
         {
             IQueryable<T> list;
@@ -26,7 +26,10 @@ namespace SimpleMvc.DAL
                     Total = context.Set<T>().Where(where).Count();
                     if (order != null)
                     {
-                        list = context.Set<T>().Where(where).OrderByDescending(order).Skip((pageIndex - 1) * pageSize).Take(pageSize);
+                        if (ordertype == 0)
+                            list = context.Set<T>().Where(where).OrderByDescending(order).Skip((pageIndex - 1) * pageSize).Take(pageSize);
+                        else
+                            list = context.Set<T>().Where(where).OrderBy(order).Skip((pageIndex - 1) * pageSize).Take(pageSize);
                     }
                     else
                     {
@@ -38,7 +41,10 @@ namespace SimpleMvc.DAL
                     Total = context.Set<T>().Count();
                     if (order != null)
                     {
-                        list = context.Set<T>().OrderByDescending(order).Skip((pageIndex - 1) * pageSize).Take(pageSize);
+                        if (ordertype == 0)
+                            list = context.Set<T>().OrderByDescending(order).Skip((pageIndex - 1) * pageSize).Take(pageSize);
+                        else
+                            list = context.Set<T>().OrderBy(order).Skip((pageIndex - 1) * pageSize).Take(pageSize);
                     }
                     else
                     {
@@ -48,6 +54,40 @@ namespace SimpleMvc.DAL
                 result = list.ToList();
             }
             return result;
+        }
+
+        public List<T> GetEntitys<T>(Expression<Func<T, bool>> where) where T : class
+        {
+            using (var context = new EFDbContext())
+            {
+                List<T> entitys;
+                if (where != null)
+                {
+                    entitys = context.Set<T>().Where(where).ToList();
+                }
+                else
+                {
+                    entitys = context.Set<T>().ToList();
+                }
+                return entitys;
+            }
+        }
+
+        public T GetEntity<T>(Expression<Func<T, bool>> where) where T : class
+        {
+            using (var context = new EFDbContext())
+            {
+                T entity;
+                if (where != null)
+                {
+                    entity = context.Set<T>().Where(where).FirstOrDefault();
+                }
+                else
+                {
+                    entity = context.Set<T>().FirstOrDefault();
+                }
+                return entity;
+            }
         }
 
         public User GetUserByUserId(Guid userId)
@@ -155,5 +195,41 @@ namespace SimpleMvc.DAL
                 return context.SaveChanges() > 0;
             }
         }
+
+        #region Lawsuit
+        public int Add<T>(T entity) where T : class
+        {
+            if (entity == null) return 0;
+            using (var context = new EFDbContext())
+            {
+                context.Set<T>().Add(entity);
+                return context.SaveChanges();
+            }
+        }
+
+        public int Update<T>(T entity) where T : class
+        {
+            if (entity == null) return 0;
+            using (var context = new EFDbContext())
+            {
+                var dbset = context.Set<T>();
+                var dbentity = context.Entry(entity);
+                dbentity.State = System.Data.Entity.EntityState.Modified;
+                foreach (var preperty in typeof(T).GetProperties())
+                {
+                    if (dbentity.Property(preperty.Name).CurrentValue != preperty.GetValue(entity))
+                    {
+                        dbentity.Property(preperty.Name).CurrentValue = preperty.GetValue(entity);
+                        dbentity.Property(preperty.Name).IsModified = true;
+                    }
+                    else
+                    {
+                        dbentity.Property(preperty.Name).IsModified = false;
+                    }
+                }
+                return context.SaveChanges();
+            }
+        }
+        #endregion
     }
 }

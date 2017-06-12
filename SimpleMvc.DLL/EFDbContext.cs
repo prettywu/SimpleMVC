@@ -11,6 +11,8 @@ namespace SimpleMvc.DAL
         public DbSet<UserRole> UserRoles { get; set; }
         public DbSet<Lawsuit> Lawsuits { get; set; }
         public DbSet<Opinion> Opinions { get; set; }
+        public DbSet<Participant> Participants { get; set; }
+        public DbSet<Application> Applications { get; set; }
 
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

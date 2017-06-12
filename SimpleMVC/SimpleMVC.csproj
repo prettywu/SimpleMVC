@@ -1279,6 +1279,7 @@
     <Content Include="Views\Test\Login.cshtml" />
     <Content Include="Views\Test\Lock.cshtml" />
     <Content Include="Views\Test\AddUser.cshtml" />
+    <Content Include="Views\Test\LawsuitAdd.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
