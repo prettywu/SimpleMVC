@@ -148,16 +148,16 @@ namespace SimpleMVC.Controllers
                 switch (model.sortname)
                 {
                     case "nickname":
-                        users = dbservice.getPageDate(select, u=>u.NickName, model.page, model.pagesize, out total);
+                        users = dbservice.getPageDate(select, u=>u.NickName, 0, model.page, model.pagesize, out total);
                         break;
                     case "Birthday":
-                        users = dbservice.getPageDate(select, u => u.Birthday, model.page, model.pagesize, out total);
+                        users = dbservice.getPageDate(select, u => u.Birthday, 0, model.page, model.pagesize, out total);
                         break;
                     case "Gender":
-                        users = dbservice.getPageDate(select, u => u.Gender, model.page, model.pagesize, out total);
+                        users = dbservice.getPageDate(select, u => u.Gender, 0, model.page, model.pagesize, out total);
                         break;
                     default:
-                        users = dbservice.getPageDate(select, u => u.RegistTime, model.page, model.pagesize, out total);
+                        users = dbservice.getPageDate(select, u => u.RegistTime, 0, model.page, model.pagesize, out total);
                         break;
 
                 }

@@ -52,7 +52,7 @@ namespace SimpleMvc.Business
 
         public List<Opinion> GetOpinionList(Guid awsuitId)
         {
-            return new DbService().GetEntitys<Opinion>(o=>o.)
+            return new DbService().GetEntitys<Opinion>(o => o.Lawsuit.Id == awsuitId);
         }
     }
 
