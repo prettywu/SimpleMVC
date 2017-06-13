@@ -1,8 +1,10 @@
-﻿using SimpleMvc.Business;
+﻿using Microsoft.AspNet.SignalR;
+using SimpleMvc.Business;
 using SimpleMvc.Common;
 using SimpleMvc.DAL;
 using SimpleMvc.Entitys;
 using SimpleMvc.Identity;
+using SimpleMVC.Hubs;
 using SimpleMVC.Models;
 using SimpleMVC.ViewModels;
 using System;
@@ -98,6 +100,9 @@ namespace SimpleMVC.Controllers
                     };
                     dbservice.WriteLoginInfo(login);
                     SimpleAuthentication.SignIn(user, login.Id.ToString());
+                    //广播消息
+                    GlobalHost.ConnectionManager.GetHubContext<MessageHub>().Clients.All.receiveMessage(user.NickName ,"登陆了");
+
                     return RedirectToAction("Index", "Test");
                 }
                 ModelState.AddModelError("", "用户名或密码错误");
@@ -159,7 +164,7 @@ namespace SimpleMVC.Controllers
                 switch (model.sortname)
                 {
                     case "nickname":
-                        users = dbservice.getPageDate(select, u => u.NickName,0, model.page, model.pagesize, out total);
+                        users = dbservice.getPageDate(select, u => u.NickName, 0, model.page, model.pagesize, out total);
                         break;
                     case "Birthday":
                         users = dbservice.getPageDate(select, u => u.Birthday, 0, model.page, model.pagesize, out total);

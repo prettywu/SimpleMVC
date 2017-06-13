@@ -54,7 +54,7 @@
                         <li class="dropdown messages-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="fa fa-envelope-o"></i>
-                                <span class="label label-success">4</span>
+                                <span class="label label-success" id="span_message">4</span>
                             </a>
                             <ul class="dropdown-menu">
                                 <li class="header">You have 4 messages</li>
@@ -282,7 +282,7 @@
                                 <!-- Menu Footer-->
                                 <li class="user-footer">
                                     <div class="pull-left">
-                                        <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                        <a class="btn btn-default btn-flat" id="btn_Profile">Profile</a>
                                     </div>
                                     <div class="pull-right">
                                         <a href="/Test/Logout" class="btn btn-default btn-flat">Sign out</a>
@@ -504,6 +504,11 @@
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
             @RenderBody()
+       
+            <div class="alert alert-warning alert-dismissible fade in" role="alert" id="alert_warning">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <span id="alert_message">Holy guacamole!</span>
+            </div>
         </div>
         <!-- /.content-wrapper -->
         <footer class="main-footer">
@@ -699,6 +704,31 @@
     <script src="/dist/js/app.min.js"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="/dist/js/demo.js"></script>
+    <script src="/Scripts/jquery.signalR-2.2.2.min.js"></script>
+    <script src="@Url.Content("~/signalr/hubs")" type="text/javascript"></script>
+    <script>
+        var num_message = 0;
+        $(function () {
+
+            var chat = $.connection.chat;
+
+            chat.client.receiveMessage = function (name, message) {
+                num_message += 1;
+                $("#span_message").text(num_message);
+                $("#alert_message").html(name + message);
+                $("#alert_warning").alert();
+            };
+            
+            $.connection.hub.start().done(function () {
+               
+            });
+            $('#btn_Profile').click(function () {
+
+                chat.server.sendAll("Profile", "消息" + num_message);
+
+            });
+        });
+    </script>
     @RenderSection("scripts", required: false)
 </body>
 </html>

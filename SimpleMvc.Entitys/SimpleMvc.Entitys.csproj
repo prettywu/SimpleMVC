@@ -43,6 +43,7 @@
     <Compile Include="Lawsuit\Application.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="Lawsuit\Lawsuit.cs" />
+    <Compile Include="SMessage.cs" />
     <Compile Include="User\Login.cs" />
     <Compile Include="Lawsuit\Opinion.cs" />
     <Compile Include="Lawsuit\Participant.cs" />
