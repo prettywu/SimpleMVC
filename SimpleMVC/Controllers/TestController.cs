@@ -79,6 +79,16 @@ namespace SimpleMVC.Controllers
         #endregion
 
         #region Apis
+
+        public ActionResult Message(string user, string message,string ids="")
+        {
+            if (string.IsNullOrEmpty(user))
+                GlobalHost.ConnectionManager.GetHubContext<MessageHub>().Clients.All.receive(user, message);
+            else
+                GlobalHost.ConnectionManager.GetHubContext<MessageHub>().Clients.Clients(ids.Split(new char[] { ',' })).receive(user, message);
+            return Json("true", JsonRequestBehavior.AllowGet);
+        }
+
         [HttpPost]
         [AllowAnonymous]
         public ActionResult Login(AdminLoginViewModel model)
@@ -101,7 +111,7 @@ namespace SimpleMVC.Controllers
                     dbservice.WriteLoginInfo(login);
                     SimpleAuthentication.SignIn(user, login.Id.ToString());
                     //广播消息
-                    GlobalHost.ConnectionManager.GetHubContext<MessageHub>().Clients.All.receiveMessage(user.NickName ,"登陆了");
+                    GlobalHost.ConnectionManager.GetHubContext<MessageHub>().Clients.All.receiveMessage(user.NickName, "登陆了");
 
                     return RedirectToAction("Index", "Test");
                 }

@@ -1263,8 +1263,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Hubs\MessageHub.cs" />
+    <Compile Include="SignalR\Hubs\MessageHub.cs" />
     <Compile Include="Models\UserModel.cs" />
+    <Compile Include="SignalR\SimpleConnection.cs" />
     <Compile Include="ViewModels\AddUserViewModel.cs" />
     <Compile Include="ViewModels\AdminLoginViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />

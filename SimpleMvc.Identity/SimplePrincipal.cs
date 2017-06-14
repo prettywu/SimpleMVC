@@ -64,5 +64,11 @@ namespace SimpleMvc.Identity
         {
             return iprincipal as SimplePrincipal;
         }
+
+        public static T GetUser<T>(this IPrincipal iprincipal) where T:class
+        {
+            SimplePrincipal principal = iprincipal as SimplePrincipal;
+            return principal.GetUser<T>();
+        }
     }
 }

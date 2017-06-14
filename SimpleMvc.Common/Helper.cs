@@ -1,11 +1,13 @@
 ﻿
+
+using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
 
 namespace SimpleMvc.Common
 {
-    public class Helper
+    public static class Helper
     {
         public static string MD5encryption(string input)
         {
@@ -53,6 +55,43 @@ namespace SimpleMvc.Common
             }
         }
 
-       
+        public static IList<T> Merge<T>(this IEnumerable<IList<T>> list) where T : class
+        {
+            IList<T> result = null;
+            foreach (IList<T> item in list)
+            {
+                if (result == null) result = item;
+                else
+                {
+                    foreach (T t in item)
+                    {
+                        result.Add(t);
+                    }
+                }
+            }
+            return result;
+        }
+
+        public static void Set(this Dictionary<string, List<string>> list, string key, string item)
+        {
+            if (list.ContainsKey(key))
+            {
+                var itemlist = list[key] ?? new List<string>();
+                if (!itemlist.Contains(item))
+                    itemlist.Add(item);
+            }
+            else
+            {
+                list.Add(key, new List<string> { item });
+            }
+        }
+
+        public static void Delete(this Dictionary<string, List<string>> list, string key, string item)
+        {
+            if (list.ContainsKey(key) && list[key].Contains(item))
+            {
+                list[key].Remove(item);
+            }
+        }
     }
 }
