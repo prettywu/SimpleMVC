@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNet.SignalR;
 using SimpleMvc.Business;
 using SimpleMvc.Common;
-using SimpleMvc.DAL;
 using SimpleMvc.Entitys;
 using SimpleMvc.Identity;
 using SimpleMVC.Hubs;
@@ -21,17 +20,7 @@ namespace SimpleMVC.Controllers
 {
     public class TestController : Controller
     {
-        private DbService _dbservice;
         private UserService _userService;
-        public DbService dbservice
-        {
-            get
-            {
-                if (_dbservice == null)
-                    _dbservice = new DbService();
-                return _dbservice;
-            }
-        }
         public UserService userService
         {
             get
@@ -113,7 +102,7 @@ namespace SimpleMVC.Controllers
                 return View(model);
             try
             {
-                var user = dbservice.LoginPasswordCheck(model.UserName, model.Password);
+                var user = userService.LoginPasswordCheck(model.UserName, model.Password);
                 if (user != null)
                 {
                     var login = new Login
@@ -124,7 +113,7 @@ namespace SimpleMVC.Controllers
                         AuthType = (int)AuthType.站内,
                         DeviceType = (int)DeviceType.WebBrowser
                     };
-                    dbservice.WriteLoginInfo(login);
+                    userService.WriteLoginInfo(login);
                     SimpleAuthentication.SignIn(user, login.Id.ToString());
                     //广播消息
                     GlobalHost.ConnectionManager.GetHubContext<MessageHub>().Clients.All.receiveMessage(user.NickName, "登陆了");
@@ -147,7 +136,7 @@ namespace SimpleMVC.Controllers
             if (!string.IsNullOrEmpty(password))
             {
                 var username = User.GetSimpleInstance().SimpleIdentity.GetUser<User>();
-                var user = dbservice.LoginPasswordCheck(username.UserName, password);
+                var user = userService.LoginPasswordCheck(username.UserName, password);
                 if (user != null)
                 {
                     SimpleAuthentication.Unlock();

@@ -114,30 +114,35 @@ namespace SimpleMvc.DAL
             var userrolelist = new List<UserRole>()
             {
                 new UserRole
-            {
-                UserId = userlist[0].Id,
-                RoleId = 1,
-            },
+                {
+                    Id=Guid.NewGuid(),
+                    UserId = userlist[0].Id,
+                    RoleId = 1
+                },
                 new UserRole
-            {
-                UserId = userlist[1].Id,
-                RoleId = 2,
-            },
+                {
+                    Id=Guid.NewGuid(),
+                    UserId = userlist[1].Id,
+                    RoleId = 2
+                },
                 new UserRole
-            {
-                UserId = userlist[2].Id,
-                RoleId = 3,
-            },
+                {
+                    Id=Guid.NewGuid(),
+                    UserId = userlist[2].Id,
+                    RoleId = 3
+                },
                 new UserRole
-            {
-                UserId = userlist[3].Id,
-                RoleId = 4,
-            },
+                {
+                    Id=Guid.NewGuid(),
+                    UserId = userlist[3].Id,
+                    RoleId = 4
+                },
                 new UserRole
-            {
-                UserId = userlist[4].Id,
-                RoleId = 5,
-            }
+                {
+                    Id=Guid.NewGuid(),
+                    UserId = userlist[4].Id,
+                    RoleId = 5
+                }
             };
             context.UserRoles.AddRange(userrolelist);
         }

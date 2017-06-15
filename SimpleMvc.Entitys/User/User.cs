@@ -38,6 +38,6 @@ namespace SimpleMvc.Entitys
         [DefaultValue(false)]
         public bool IsDeleted { get; set; }
 
-        
+        public virtual List<UserRole> UserRoles { get; set; }
     }
 }

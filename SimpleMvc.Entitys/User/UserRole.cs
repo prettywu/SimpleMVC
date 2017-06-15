@@ -5,11 +5,6 @@ namespace SimpleMvc.Entitys
 {
     public class UserRole
     {
-        public UserRole()
-        {
-            Id = Guid.NewGuid();
-        }
-
         public Guid Id { get; set; }
 
         public Guid UserId { get; set; }
@@ -18,5 +13,7 @@ namespace SimpleMvc.Entitys
 
         [DefaultValue(false)]
         public bool IsDeleted { get; set; }
+
+        public Role Role { get; set; }
     }
 }

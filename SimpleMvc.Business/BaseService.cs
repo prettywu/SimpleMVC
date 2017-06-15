@@ -10,65 +10,37 @@ namespace SimpleMvc.Business
 {
     public class BaseService
     {
-        /// <summary>
-        /// 分页搜索
-        /// </summary>
-        public List<T> getPageDate<T, TKey>(Expression<Func<T, bool>> where, Expression<Func<T, TKey>> order, int ordertype, int pageIndex, int pageSize, out int Total)
-        where T : class
-        {
-            IQueryable<T> list;
-            List<T> result;
-            using (var context = new EFDbContext())
-            {
-                if (where != null)
-                {
-                    Total = context.Set<T>().Where(where).Count();
-                    if (order != null)
-                    {
-                        if (ordertype == 0)
-                            list = context.Set<T>().Where(where).OrderByDescending(order).Skip((pageIndex - 1) * pageSize).Take(pageSize);
-                        else
-                            list = context.Set<T>().Where(where).OrderBy(order).Skip((pageIndex - 1) * pageSize).Take(pageSize);
-                    }
-                    else
-                    {
-                        list = context.Set<T>().Where(where).Skip((pageIndex - 1) * pageSize).Take(pageSize);
-                    }
-                }
-                else
-                {
-                    Total = context.Set<T>().Count();
-                    if (order != null)
-                    {
-                        if (ordertype == 0)
-                            list = context.Set<T>().OrderByDescending(order).Skip((pageIndex - 1) * pageSize).Take(pageSize);
-                        else
-                            list = context.Set<T>().OrderBy(order).Skip((pageIndex - 1) * pageSize).Take(pageSize);
-                    }
-                    else
-                    {
-                        list = context.Set<T>().Skip((pageIndex - 1) * pageSize).Take(pageSize);
-                    }
-                }
-                result = list.ToList();
-            }
-            return result;
-        }
-
-        public List<T> GetPageList<T>(Expression<Func<T, bool>> condition, int pageIndex, int pageSize, out int total, params OrderModelField[] orders) where T : class
+        protected List<T> GetPageList<T>(Expression<Func<T, bool>> condition, int pageIndex, int pageSize, out int total,string includes, params OrderModelField[] orders) where T : class
         {
             using (var context = new EFDbContext())
             {
+                
                 //条件过滤
-                IQueryable<T> query;
+                IQueryable<T> query = context.Set<T>();
 
                 if (condition == null)
-                    query = context.Set<T>();
-                else
-                    query = context.Set<T>().Where(condition);
+                    query = query.Provider.CreateQuery<T>(condition);
 
                 //创建表达式变量参数
                 var parameter = Expression.Parameter(typeof(T), "p");
+
+                //贪婪加载
+                //if (includes != null && includes.Any())
+                //{
+                //    for (int i = 0; i < includes.Length; i++)
+                //    {
+                //        //根据属性名获取属性
+                //        var property = typeof(T).GetProperty(includes[i]);
+                //        //创建一个访问属性的表达式
+                //        var propertyAccess = Expression.MakeMemberAccess(parameter, property);
+                //        var includeExp = Expression.Lambda(propertyAccess, parameter);
+
+                //        string OrderName = "Include";
+
+                //        MethodCallExpression resultExp = Expression.Call(typeof(Queryable), OrderName, new Type[] { typeof(T), property.PropertyType }, query.Expression, Expression.Quote(includeExp));
+                //        query = query.Provider.CreateQuery<T>(resultExp);
+                //    }
+                //}
 
                 if (orders != null && orders.Length > 0)
                 {
@@ -88,13 +60,15 @@ namespace SimpleMvc.Business
 
                 }
 
+                
+
                 total = query.Count();
                 return query.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
             }
 
         }
 
-        public List<T> GetEntitys<T>(Expression<Func<T, bool>> where) where T : class
+        protected List<T> GetEntitys<T>(Expression<Func<T, bool>> where) where T : class
         {
             using (var context = new EFDbContext())
             {
@@ -111,7 +85,7 @@ namespace SimpleMvc.Business
             }
         }
 
-        public T GetEntity<T>(Expression<Func<T, bool>> where) where T : class
+        protected T GetEntity<T>(Expression<Func<T, bool>> where) where T : class
         {
             using (var context = new EFDbContext())
             {
