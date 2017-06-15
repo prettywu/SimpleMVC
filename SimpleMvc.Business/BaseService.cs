@@ -14,33 +14,20 @@ namespace SimpleMvc.Business
         {
             using (var context = new EFDbContext())
             {
-                
-                //条件过滤
-                IQueryable<T> query = context.Set<T>();
+                IQueryable<T> query ;
+                if (!string.IsNullOrEmpty(includes))
+                    query = context.Set<T>().Include(includes);
+                else
+                    query = context.Set<T>();
 
-                if (condition == null)
-                    query = query.Provider.CreateQuery<T>(condition);
+                if (condition != null)
+                {
+                    query = query.Where(condition);
+                }
+                    
 
                 //创建表达式变量参数
                 var parameter = Expression.Parameter(typeof(T), "p");
-
-                //贪婪加载
-                //if (includes != null && includes.Any())
-                //{
-                //    for (int i = 0; i < includes.Length; i++)
-                //    {
-                //        //根据属性名获取属性
-                //        var property = typeof(T).GetProperty(includes[i]);
-                //        //创建一个访问属性的表达式
-                //        var propertyAccess = Expression.MakeMemberAccess(parameter, property);
-                //        var includeExp = Expression.Lambda(propertyAccess, parameter);
-
-                //        string OrderName = "Include";
-
-                //        MethodCallExpression resultExp = Expression.Call(typeof(Queryable), OrderName, new Type[] { typeof(T), property.PropertyType }, query.Expression, Expression.Quote(includeExp));
-                //        query = query.Provider.CreateQuery<T>(resultExp);
-                //    }
-                //}
 
                 if (orders != null && orders.Length > 0)
                 {
