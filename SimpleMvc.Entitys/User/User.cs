@@ -9,11 +9,6 @@ namespace SimpleMvc.Entitys
 {
     public class User
     {
-        public User()
-        {
-            Id = Guid.NewGuid();
-        }
-
         public Guid Id { get; set; }
 
         public string UserName { get; set; }
@@ -23,6 +18,12 @@ namespace SimpleMvc.Entitys
         public string NickName { get; set; }
 
         public string HeadImage { get; set; }
+
+        public string Email { get; set; }
+
+        public string Phone { get; set; }
+
+        public string Location { get; set; }
 
         public DateTime Birthday { get; set; }
 
@@ -36,5 +37,7 @@ namespace SimpleMvc.Entitys
 
         [DefaultValue(false)]
         public bool IsDeleted { get; set; }
+
+        
     }
 }

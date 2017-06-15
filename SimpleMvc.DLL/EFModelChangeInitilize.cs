@@ -20,77 +20,97 @@ namespace SimpleMvc.DAL
             {
                 new User
                 {
-                     UserName = "yoyo@qq.com",
+                    Id=Guid.NewGuid(),
+                    UserName = "yoyo@qq.com",
                     PasswordHash = Helper.MD5encryption("528888"),
                     NickName = "yoyo",
                     Birthday = new DateTime(1990, 12, 14),
-                Gender = (int)Gender.Female,
-                RegistTime = DateTime.Now.AddDays(-5),
-                LastUpdateTime = DateTime.Now,
-                State=1,
-                HeadImage = "http://img.qqbody.com/uploads/allimg/201502/05-171941_803.jpg"
+                    Email="yoyo@qq.com",
+                    Phone="13813516387",
+                    Location="上海",
+                    Gender = (int)Gender.Female,
+                    RegistTime = DateTime.Now.AddDays(-5),
+                    LastUpdateTime = DateTime.Now,
+                    State=1,
+                    HeadImage = "http://img3.imgtn.bdimg.com/it/u=2277472016,2846573143&fm=214&gp=0.jpg"
                 },
                 new User
-            {
-                UserName = "xiayanhan@qq.com",
-                PasswordHash = Helper.MD5encryption("123456"),
-                NickName = "夏颜涵",
-                Birthday = new DateTime(1996, 10, 17),
-                Gender = (int)Gender.Female,
-                RegistTime = DateTime.Now,
-                LastUpdateTime = DateTime.Now,
-                State=1,
-                HeadImage = "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1495443056&di=49d076e75e1e4b4b6e5aaf2977e7626c&imgtype=jpg&er=1&src=http%3A%2F%2Fv1.qzone.cc%2Favatar%2F201303%2F18%2F17%2F14%2F5146daf314dfa660.jpg%21180x180.jpg",
-            },
+                {
+                    Id=Guid.NewGuid(),
+                    UserName = "xiayanhan@qq.com",
+                    PasswordHash = Helper.MD5encryption("123456"),
+                    NickName = "夏颜涵",
+                    Birthday = new DateTime(1996, 10, 17),
+                    Email="xiayanhan@qq.com",
+                    Phone="13817516387",
+                    Location="北京",
+                    Gender = (int)Gender.Female,
+                    RegistTime = DateTime.Now,
+                    LastUpdateTime = DateTime.Now,
+                    State=0,
+                    HeadImage = "http://img4.imgtn.bdimg.com/it/u=2115793746,1560654875&fm=214&gp=0.jpg"
+                },
                 new User
                 {
+                    Id=Guid.NewGuid(),
                      UserName = "hui@qq.com",
-                PasswordHash = Helper.MD5encryption("654321"),
-                NickName = "huihui",
-                Birthday = new DateTime(1991, 11, 14),
-                Gender = (int)Gender.Male,
-                RegistTime = DateTime.Now.AddHours(-3),
-                LastUpdateTime = DateTime.Now,
-                State=2,
-                HeadImage = "http://img.qqbody.com/uploads/allimg/201502/05-171941_803.jpg"
+                    PasswordHash = Helper.MD5encryption("654321"),
+                    NickName = "huihui",
+                    Birthday = new DateTime(1991, 11, 14),
+                    Email="hui@qq.com",
+                    Phone="15140499494",
+                    Location="深圳",
+                    Gender = (int)Gender.Male,
+                    RegistTime = DateTime.Now.AddHours(-3),
+                    LastUpdateTime = DateTime.Now,
+                    State=2,
+                    HeadImage = "http://img.qqbody.com/uploads/allimg/201502/05-171941_803.jpg"
                 },
                 new User
                 {
+                    Id=Guid.NewGuid(),
                      UserName = "pretty@qq.com",
-                PasswordHash = Helper.MD5encryption("000000"),
-                NickName = "pretty boy",
-                Birthday = new DateTime(1992, 3, 5),
-                Gender = (int)Gender.Male,
-                RegistTime = DateTime.Now.AddMinutes(-12),
-                LastUpdateTime = DateTime.Now,
-                State=3,
-                HeadImage = "http://p1.qqyou.com/touxiang/UploadPic/2014-5/23/2014052311412225651.jpg"
+                    PasswordHash = Helper.MD5encryption("000000"),
+                    NickName = "pretty boy",
+                    Birthday = new DateTime(1992, 3, 5),
+                    Email="pretty@qq.com",
+                    Phone="13813516364",
+                    Location="厦门",
+                    Gender = (int)Gender.Male,
+                    RegistTime = DateTime.Now.AddMinutes(-12),
+                    LastUpdateTime = DateTime.Now,
+                    State=1,
+                    HeadImage = "http://p1.qqyou.com/touxiang/UploadPic/2014-5/23/2014052311412225651.jpg"
                 },
                 new User
                 {
-                     UserName = "happy@qq.com",
-                PasswordHash = Helper.MD5encryption("888888"),
-                NickName = "happy girl",
-                Birthday = new DateTime(1995, 5, 20),
-                Gender = (int)Gender.Female,
-                RegistTime = DateTime.Now,
-                LastUpdateTime = DateTime.Now,
-                State=0,
-                HeadImage = "http://www.feizl.com/upload2007/2015_07/150724123232506.jpg"
+                    Id=Guid.NewGuid(),
+                    UserName = "happy@qq.com",
+                    PasswordHash = Helper.MD5encryption("888888"),
+                    NickName = "happy girl",
+                    Birthday = new DateTime(1995, 5, 20),
+                    Email="happy@qq.com",
+                    Phone="13513546337",
+                    Location="成都",
+                    Gender = (int)Gender.Female,
+                    RegistTime = DateTime.Now,
+                    LastUpdateTime = DateTime.Now,
+                    State=10,
+                    HeadImage = "http://www.feizl.com/upload2007/2015_07/150724123232506.jpg"
                 }
             };
             context.Users.AddRange(userlist);
-            
+
             var rolelist = new List<Role>()
             {
-                new Role{Id=1, RoleName="Admin", CreateTime=DateTime.Now,IsDeleted=false},
+                new Role{Id=1, RoleName="超级管理员", CreateTime=DateTime.Now,IsDeleted=false},
                 new Role{Id=2, RoleName="管理员", CreateTime=DateTime.Now,IsDeleted=false},
-                new Role{Id=3, RoleName="受害人", CreateTime=DateTime.Now,IsDeleted=false},
-                new Role{Id=4, RoleName="律师", CreateTime=DateTime.Now,IsDeleted=false},
-                new Role{Id=5, RoleName="听证员", CreateTime=DateTime.Now,IsDeleted=false}
+                new Role{Id=3, RoleName="总经理", CreateTime=DateTime.Now,IsDeleted=false},
+                new Role{Id=4, RoleName="部门经理", CreateTime=DateTime.Now,IsDeleted=false},
+                new Role{Id=5, RoleName="客服", CreateTime=DateTime.Now,IsDeleted=false}
             };
             context.Roles.AddRange(rolelist);
-            
+
             var userrolelist = new List<UserRole>()
             {
                 new UserRole

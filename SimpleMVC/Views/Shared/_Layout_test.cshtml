@@ -1,5 +1,5 @@
 ﻿@using SimpleMvc.Entitys
-@{ 
+@{
     User user = User.GetSimpleInstance().GetUser<User>();
 }
 
@@ -23,16 +23,17 @@
          folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="/dist/css/skins/_all-skins.min.css">
     <style>
-        .alert-sm{
-            width:300px;
+        .alert-sm {
+            width: 300px;
             float: right;
-            position:fixed;
-            right:5px;
-            bottom:5px;
+            position: fixed;
+            right: 5px;
+            bottom: 5px;
+            display:none;
         }
     </style>
 
-    @RenderSection("styles",false)
+    @RenderSection("styles", false)
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -512,10 +513,11 @@
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
             @RenderBody()
-       
-            <div class="alert alert-info alert-dismissible alert-sm fade in" role="alert" id="alert_warning">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
-                <span id="alert_message">Holy guacamole!</span> <a href="#" class="alert-link">点击查看</a>
+            <div id="alert_message">
+                <div class="alert alert-info alert-dismissible alert-sm fade in" role="alert" id="alert_warning">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    <span id="alert_message">Holy guacamole!</span> <a href="#" class="alert-link">点击查看</a>
+                </div>
             </div>
         </div>
         <!-- /.content-wrapper -->
@@ -702,7 +704,7 @@
     <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
     <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
     <script>
-    $.widget.bridge('uibutton', $.ui.button);
+        $.widget.bridge('uibutton', $.ui.button);
     </script>
     <!-- Bootstrap 3.3.6 -->
     <script src="/bootstrap/js/bootstrap.min.js"></script>
@@ -723,12 +725,12 @@
             chat.client.receive = function (name, message) {
                 num_message += 1;
                 $("#span_message").text(num_message);
-                $("#alert_message").html(name + message);
-                $("#alert_warning").alert();
+              
+                messageAlert(name + message);
             };
-            
+
             $.connection.hub.start().done(function () {
-               
+
             });
             $('#btn_Profile').click(function () {
 
@@ -736,6 +738,19 @@
 
             });
         });
+
+        function messageAlert(message) {
+            var html = '<div class="alert alert-info alert-dismissible alert-sm fade in" role="alert">';
+            html += '<button type="button" class="close" data-dismiss="alert" aria-label="Close">';
+            html += '<span aria-hidden="true">×</span>';
+            html += '</button>';
+            html += '<span id="alert_message">' + message + '</span> '
+            html += '<a href="#" class="alert-link">点击查看</a>';
+            html += '</div>';
+            var ele = $(html);
+            $("#alert_message").append(ele);
+           ele.show("slow");
+        }
     </script>
     @RenderSection("scripts", required: false)
 </body>

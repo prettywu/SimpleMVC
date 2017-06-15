@@ -22,6 +22,7 @@ namespace SimpleMVC.Controllers
     public class TestController : Controller
     {
         private DbService _dbservice;
+        private UserService _userService;
         public DbService dbservice
         {
             get
@@ -29,6 +30,15 @@ namespace SimpleMVC.Controllers
                 if (_dbservice == null)
                     _dbservice = new DbService();
                 return _dbservice;
+            }
+        }
+        public UserService userService
+        {
+            get
+            {
+                if (_userService == null)
+                    _userService = new UserService();
+                return _userService;
             }
         }
 
@@ -46,6 +56,12 @@ namespace SimpleMVC.Controllers
         }
         [Authentication]
         public ActionResult Test2()
+        {
+            return View();
+        }
+
+        [SimpleAuthorize(Roles = "管理员,超级管理员")]
+        public ActionResult AddUser()
         {
             return View();
         }
@@ -154,44 +170,10 @@ namespace SimpleMVC.Controllers
         {
             try
             {
-                Expression<Func<User, bool>> select = null;
-
-                if (!string.IsNullOrEmpty(model.username))
-                {
-                    if (!string.IsNullOrEmpty(model.nickname))
-                    {
-                        select = u => u.UserName.Contains(model.username) && u.NickName.Contains(model.nickname);
-                    }
-                    else
-                    {
-                        select = u => u.UserName.Contains(model.username);
-                    }
-                }
-
-                List<User> users;
-                IEnumerable<UserModel> usermodels = null;
                 int total = 0;
-                switch (model.sortname)
-                {
-                    case "nickname":
-                        users = dbservice.getPageDate(select, u => u.NickName, 0, model.page, model.pagesize, out total);
-                        break;
-                    case "Birthday":
-                        users = dbservice.getPageDate(select, u => u.Birthday, 0, model.page, model.pagesize, out total);
-                        break;
-                    case "Gender":
-                        users = dbservice.getPageDate(select, u => u.Gender, 0, model.page, model.pagesize, out total);
-                        break;
-                    default:
-                        users = dbservice.getPageDate(select, u => u.RegistTime, 0, model.page, model.pagesize, out total);
-                        break;
+                List<User> users = userService.GetUserList(model.username, model.nickname, model.state, model.sortname, model.sorttype, model.page, model.pagesize, out total);
+                var usermodels = users.Select(u => u.ConvertToModel());
 
-                }
-
-                if (users != null)
-                {
-                    usermodels = users.Select(u => u.ConvertToModel());
-                }
 
                 return new JsonPage(model.page, model.pagesize, total, usermodels, JsonRequestBehavior.AllowGet);
             }
@@ -210,6 +192,7 @@ namespace SimpleMVC.Controllers
             {
                 var user = new User()
                 {
+                    Id=Guid.NewGuid(),
                     UserName = model.email,
                     PasswordHash = Helper.MD5encryption(model.email),
                     NickName = model.nickname,

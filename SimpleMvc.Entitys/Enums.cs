@@ -19,8 +19,10 @@ namespace SimpleMvc.Entitys
         /// </summary>
         public enum UserState
         {
+            未审核=0,
             正常=1,
-            冻结=2
+            冻结=2,
+            审核不通过=10
         }
 
         public enum AuthType

@@ -7,6 +7,14 @@ namespace SimpleMVC.ViewModels
 {
     public class UserSearchViewModel
     {
+        public UserSearchViewModel()
+        {
+            sortname = "RegistTime";
+            state = -1;
+            page = 1;
+            pagesize = 10;
+        }
+
         public string username { get; set; }
         public string nickname { get; set; }
         public string sortname { get; set; }

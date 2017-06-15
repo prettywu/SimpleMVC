@@ -85,44 +85,44 @@
                 <div class="box-body">
                     <div class="row">
                         <div class="col-xs-2">
-                            <label for="exampleInputEmail1">昵称</label>
-                            <input type="email" class="form-control input-sm" id="exampleInputEmail1" placeholder="昵称">
+                            <label for="search_nickname">昵称</label>
+                            <input type="text" class="form-control input-sm" id="search_nickname" placeholder="昵称">
                         </div>
                         <div class="col-sm-2">
-                            <label for="exampleInputEmail1">邮箱</label>
-                            <input type="email" class="form-control input-sm " id="exampleInputEmail1" placeholder="昵称">
+                            <label for="search_email">邮箱</label>
+                            <input type="text" class="form-control input-sm " id="search_email" placeholder="邮箱">
                         </div>
                         <div class="col-md-1">
-                            <label for="exampleInputEmail1">手机号</label>
-                            <input type="email" class="form-control  input-sm" id="exampleInputEmail1" placeholder="昵称">
+                            <label for="search_phone">手机号</label>
+                            <input type="text" class="form-control  input-sm" id="search_phone" placeholder="手机号">
                         </div>
                         <div class="col-lg-1">
-                            <label for="exampleInputEmail1">性别</label>
-                            <select class="form-control input-sm">
+                            <label for="search_gender">性别</label>
+                            <select class="form-control input-sm" id="search_gender">
                                 <option>男</option>
                                 <option>女</option>
                             </select>
                         </div>
                         <div class="col-sm-2">
-                            <label for="exampleInputEmail1">生日</label>
+                            <label for="search_birthday">生日</label>
                             <div class="input-group">
                                 <div class="input-group-addon input-group-sm">
                                     <i class="fa fa-calendar"></i>
                                 </div>
-                                <input type="text" class="form-control input-sm pull-right" id="reservation">
+                                <input type="text" class="form-control input-sm pull-right" id="search_birthday">
                             </div>
                         </div>
                         <div class="col-sm-2">
-                            <label>注册时间</label>
+                            <label for="search_registtime">注册时间</label>
                             <div class="input-group">
                                 <div class="input-group-addon input-group-sm">
                                     <i class="fa fa-calendar"></i>
                                 </div>
-                                <input type="text" class="form-control input-sm pull-right" id="reservation2">
+                                <input type="text" class="form-control input-sm pull-right" id="search_registtime">
                             </div>
                         </div>
                         <div class="col-sm-2">
-                            <button type="button" class="btn btn-info btn-sm" id="btn-search">搜索</button>
+                            <button type="button" class="btn btn-info btn-sm" id="btn-search" title="搜索">搜索</button>
                             <button type="button" class="btn btn-info btn-sm" id="btn-refresh" title="刷新"><i class="fa fa-refresh"></i></button>
                             <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#myModal" id="btn-add" title="添加用户"><i class="fa fa-plus"></i></button>
                         </div>
@@ -263,9 +263,8 @@
     <script>
         $(function () {
             //Date range picker
-            $('#reservation').daterangepicker();
-            $('#reservation2').daterangepicker();
-            $('#birthday').datepicker({ 'format': 'yyyy-mm-dd' }).on('changeDate', function (e) {
+            $('#search_registtime').daterangepicker();
+            $('#search_birthday').datepicker({ 'format': 'yyyy-mm-dd' }).on('changeDate', function (e) {
                 $(".adduser_form").data('bootstrapValidator').updateStatus('birthday', 'NOT_VALIDATED', null).validateField('birthday');
             });
             $('input.iradio').iCheck({
@@ -302,7 +301,15 @@
                 "ajax": {
                     url: '/Test/GetUserList',
                     data: function (d) {
+                        var sortname = "RegistTime";
+                        var sorttype = 0;
+                        if (d.order && d.order.length > 0) {
+                            sortname = d.columns[d.order[0].column].data;
+                            sorttype = d.order[0].dir == "desc" ? 0 : 1;
+                        }
                         return {
+                            "sortname": sortname,
+                            "sorttype":sorttype,
                             "page": d.start / d.length + 1,
                             "pagesize": d.length
                         }
@@ -375,6 +382,16 @@
                 $(".adduser_form").data('bootstrapValidator').resetForm();
             });
             $('#btn-refresh').click(function () { $('#example2').DataTable().ajax.reload(null, false); });
+            $('#btn-search').click(function () {
+                var nickname = $("#search_nickname").val();
+                var email = $("#search_email").val();
+                var phone = $("#search_phone").val();
+                var gender = $("#search_gender").val();
+                var birthday = $("#search_birthday").val();
+                var registtime = $("#search_registtime").val();
+                var searchUrl = '/Test/GetUserList?username=' + email + '&nickname=' + nickname +  '&birthday=' + birthday;
+                $('#example2').DataTable().ajax.url(searchUrl).load();
+            });
         });
 
         function renderOption(data, type, row) {

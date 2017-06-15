@@ -11,7 +11,6 @@ using SimpleMvc.Entitys;
 
 namespace SimpleMVC.Hubs
 {
-    [Authentication(DisLock = true)]
     [HubName("chat")]
     public class MessageHub : Hub
     {
@@ -23,21 +22,22 @@ namespace SimpleMVC.Hubs
 
         public MessageHub()
         {
-            this.userid = HttpContext.Current.User.GetUser<User>().Id.ToString();
+            if (HttpContext.Current != null&& HttpContext.Current.User != null)
+                this.userid = HttpContext.Current.User.GetUser<User>().Id.ToString();
         }
 
         public void SendAll(string name, string message)
         {
-            
+
             Clients.All.receive(name, message);
         }
 
-        public void SendTo(string user,string message,int type)
+        public void SendTo(string user, string message, int type)
         {
             Clients.Clients(_connections[user]).receive(message, type);
         }
 
-        public void SendToGroup(List<string> users,string message,int type)
+        public void SendToGroup(List<string> users, string message, int type)
         {
             var receivers = _connections.Where(c => users.Contains(c.Key)).Select(kv => kv.Value).Merge();
             Clients.Clients(receivers).receive(message, type);
@@ -61,9 +61,11 @@ namespace SimpleMVC.Hubs
 
         public override Task OnDisconnected(bool stopCalled)
         {
-            _connections.Delete(userid, Context.ConnectionId);
+            _connections.DeleteListItem(Context.ConnectionId);
 
             return base.OnDisconnected(stopCalled);
         }
+
+
     }
 }

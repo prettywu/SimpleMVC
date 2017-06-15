@@ -56,6 +56,45 @@ namespace SimpleMvc.DAL
             return result;
         }
 
+        public List<T> GetPageList<T>(Expression<Func<T, bool>> condition, int pageIndex, int pageSize, out int total, params OrderModelField[] orders)where T:class
+        {
+            using(var context=new EFDbContext())
+            {
+                //条件过滤
+                IQueryable< T > query;
+                
+                if(condition==null)
+                    query = context.Set<T>();
+                else
+                    query = context.Set<T>().Where(condition);
+
+                //创建表达式变量参数
+                var parameter = Expression.Parameter(typeof(T), "p");
+
+                if (orders != null && orders.Length > 0)
+                {
+                    for (int i = 0; i < orders.Length; i++)
+                    {
+                        //根据属性名获取属性
+                        var property = typeof(T).GetProperty(orders[i].propertyName);
+                        //创建一个访问属性的表达式
+                        var propertyAccess = Expression.MakeMemberAccess(parameter, property);
+                        var orderByExp = Expression.Lambda(propertyAccess, parameter);
+                        
+                        string OrderName = orders[i].isDesc ? "OrderByDescending" : "OrderBy";
+                        
+                        MethodCallExpression resultExp = Expression.Call(typeof(Queryable), OrderName, new Type[] { typeof(T), property.PropertyType }, query.Expression, Expression.Quote(orderByExp));
+                        query = query.Provider.CreateQuery<T>(resultExp);
+                    }
+
+                }
+
+                total = query.Count();
+                return query.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+            }
+            
+        }
+
         public List<T> GetEntitys<T>(Expression<Func<T, bool>> where) where T : class
         {
             using (var context = new EFDbContext())
@@ -231,5 +270,11 @@ namespace SimpleMvc.DAL
             }
         }
         #endregion
+    }
+
+    public struct OrderModelField
+    {
+        public string propertyName { get; set; }
+        public bool isDesc { get; set; }
     }
 }
