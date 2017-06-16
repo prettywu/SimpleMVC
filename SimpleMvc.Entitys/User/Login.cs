@@ -27,5 +27,7 @@ namespace SimpleMvc.Entitys
         public int DeviceType { get; set; }
 
         public DateTime LoginTime { get; set; }
+
+        public User User { get; set; }
     }
 }

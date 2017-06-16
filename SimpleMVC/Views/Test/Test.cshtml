@@ -30,6 +30,7 @@
 
         .table tr > td {
             vertical-align: middle !important;
+            text-align:center;
         }
 
         .dataTables_length {
@@ -137,6 +138,7 @@
                         <th>昵称</th>
                         <th>邮箱</th>
                         <th>手机号</th>
+                        <th>角色</th>
                         <th>生日</th>
                         <th>性别</th>
                         <th>注册时间</th>
@@ -263,8 +265,15 @@
     <script>
         $(function () {
             //Date range picker
-            $('#search_registtime').daterangepicker();
-            $('#search_birthday').datepicker({ 'format': 'yyyy-mm-dd' }).on('changeDate', function (e) {
+            $('#search_registtime').daterangepicker({
+                locale: {
+                    format: 'YYYY-MM-DD',
+                    daysOfWeek: ['日', '一', '二', '三', '四', '五', '六'],
+                    monthNames: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+                },
+            });
+            $('#birthday').datepicker({ 'format': 'yyyy-mm-dd' });
+            $('#search_birthday').datepicker({ 'format': 'yyyy-mm-dd'}).on('changeDate', function (e) {
                 $(".adduser_form").data('bootstrapValidator').updateStatus('birthday', 'NOT_VALIDATED', null).validateField('birthday');
             });
             $('input.iradio').iCheck({
@@ -276,27 +285,29 @@
                 "lengthMenu": [5, 10, 25, 50],
                 "searching": false,
                 "ordering": true,
-                "order": [[6, 'desc']],
+                "order": [[7, 'desc']],
                 "info": false,
                 "autoWidth": true,
                 "stateSave": false,
                 "serverSide": true,
                 "dom": 'tlp',
                 "columns": [
-                    { "data": "HeadImage"},
+                    { "data": "HeadImage" },
                     { "data": "NickName" },
                     { "data": "UserName" },
-                    { "data": "UserName" },
+                    { "data": "Phone" },
+                    { "data": "Role" },
                     { "data": "Birthday" },
                     { "data": "Gender" },
                     { "data": "RegistTime" },
                     { "data": "State" },
-                    { "data": "Id", "render": renderOption }
+                    { "data": "Id"}
                 ],
                 "columnDefs": [
-                    { "targets": [0, 1, 2, 8], "orderable": false },
+                    { "targets": [0, 1, 2,4, 9], "orderable": false },
                     { "targets": [0], "render": function (data, type, row) { return '<img class="headimage" src="' + data + '"/>'; } },
-                    { "targets": [8], "render": renderOption }
+                     { "targets": [4], "render": renderRole },
+                    { "targets": [9], "render": renderOption }
                 ],
                 "ajax": {
                     url: '/Test/GetUserList',
@@ -309,7 +320,7 @@
                         }
                         return {
                             "sortname": sortname,
-                            "sorttype":sorttype,
+                            "sorttype": sorttype,
                             "page": d.start / d.length + 1,
                             "pagesize": d.length
                         }
@@ -389,11 +400,20 @@
                 var gender = $("#search_gender").val();
                 var birthday = $("#search_birthday").val();
                 var registtime = $("#search_registtime").val();
-                var searchUrl = '/Test/GetUserList?username=' + email + '&nickname=' + nickname +  '&birthday=' + birthday;
+                var searchUrl = '/Test/GetUserList?username=' + email + '&nickname=' + nickname + '&birthday=' + birthday;
                 $('#example2').DataTable().ajax.url(searchUrl).load();
             });
         });
-
+        function renderRole(data, type, row) {
+            var roles = "";
+            for (var i = 0; i < data.length; i++) {
+                if (roles == "")
+                    roles += data[i];
+                else
+                    roles += "," + data[i];
+            }
+            return roles;
+        }
         function renderOption(data, type, row) {
             var userid = data;
             var nickname = row.NickName;

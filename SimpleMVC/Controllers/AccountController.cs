@@ -8,13 +8,13 @@ using SimpleMVC.ViewModels;
 using SimpleMvc.Entitys;
 using static SimpleMvc.Entitys.Enums;
 using SimpleMvc.Common;
-using SimpleMvc.DAL;
+using SimpleMvc.Business;
 
 namespace SimpleMVC.Controllers
 {
     public class AccountController : Controller
     {
-        public DbService userManager = new DbService();
+        public UserService userManager = new UserService();
 
         // GET: Account
         public ActionResult Index()

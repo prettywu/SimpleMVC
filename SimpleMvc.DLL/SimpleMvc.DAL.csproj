@@ -49,7 +49,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DbService.cs" />
     <Compile Include="EFDbContext.cs" />
     <Compile Include="EFModelChangeInitilize.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

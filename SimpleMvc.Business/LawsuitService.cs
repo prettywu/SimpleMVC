@@ -8,16 +8,15 @@ using System.Linq.Expressions;
 
 namespace SimpleMvc.Business
 {
-    public class LawsuitService
+    public class LawsuitService : BaseService
     {
-        public List<Lawsuit> GetLawsuitList(int pageindex, int pagesize, out int total, string no = "", string title = "", int state = -1, string sort = "CreateTime", string sorttype = "desc")
+        public List<Lawsuit> GetLawsuitList(int pageindex, int pagesize, out int total, string no, string title, int sorttype, int state = -1, string sort = "CreateTime")
         {
-            Expression<Func<Lawsuit, bool>> where = null;
-            Expression<Func<Lawsuit, string>> order = null;
+            Expression<Func<Lawsuit, bool>> where = l => 1 == 1;
             List<Lawsuit> list;
             if (!string.IsNullOrEmpty(no))
             {
-                where = l => l.LawsuitNo.Contains(no);
+                where.And(l => l.LawsuitNo.Contains(no));
             }
             if (!string.IsNullOrEmpty(title))
             {
@@ -27,32 +26,36 @@ namespace SimpleMvc.Business
             {
                 where.And(l => l.State == state);
             }
-
-            order = l => typeof(Lawsuit).GetProperty(sort).GetValue(l).ToString();
-
-            int ordertype = 0;
-            if (sorttype == "desc")
+            
+            var orders = new OrderModelField[]
             {
-                ordertype = 1;
-            }
-            list = new DbService().getPageDate(where, order, ordertype, pageindex, pagesize, out total);
+                new OrderModelField
+                {
+                     propertyName=sort,
+                     isDesc=sorttype==0?true:false
+                }
+            };
+
+            list = GetPageList(where, orders, null, pageindex, pagesize, out total);
             return list;
         }
 
         public bool AddLawsuit(Lawsuit lawsuit)
         {
-            return new DbService().Add<Lawsuit>(lawsuit) > 0;
+            return Add<Lawsuit>(lawsuit) > 0;
         }
 
         public bool UpdateLawsuit(Lawsuit lawsuit)
         {
-            return new DbService().Update<Lawsuit>(lawsuit) > 0;
+            return Update<Lawsuit>(lawsuit) > 0;
         }
 
         public List<Opinion> GetOpinionList(Guid awsuitId)
         {
-            return new DbService().GetEntitys<Opinion>(o => o.Lawsuit.Id == awsuitId);
+            return GetEntitys<Opinion>(o => o.Lawsuit.Id == awsuitId);
         }
+
+
     }
 
 

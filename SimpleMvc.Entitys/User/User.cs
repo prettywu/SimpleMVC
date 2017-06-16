@@ -33,11 +33,15 @@ namespace SimpleMvc.Entitys
 
         public DateTime RegistTime { get; set; }
 
+        public string Company { get; set; }
+
         public int State { get; set; }
 
         [DefaultValue(false)]
         public bool IsDeleted { get; set; }
 
-        public virtual List<UserRole> UserRoles { get; set; }
+        public  List<UserRole> UserRoles { get; set; }
+
+        public  List<Login> Logins { get; set; }
     }
 }

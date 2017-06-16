@@ -25,7 +25,7 @@ namespace SimpleMVC
             //{
             //    context.Database.Initialize(true);
             //}
-            
+
         }
 
         // 1 在 ASP.NET 响应请求时作为 HTTP 执行管线链中的第一个事件发生

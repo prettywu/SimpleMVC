@@ -123,25 +123,25 @@ namespace SimpleMvc.DAL
                 {
                     Id=Guid.NewGuid(),
                     UserId = userlist[1].Id,
-                    RoleId = 2
+                    RoleId = 1
                 },
                 new UserRole
                 {
                     Id=Guid.NewGuid(),
                     UserId = userlist[2].Id,
-                    RoleId = 3
+                    RoleId = 2
                 },
                 new UserRole
                 {
                     Id=Guid.NewGuid(),
                     UserId = userlist[3].Id,
-                    RoleId = 4
+                    RoleId = 2
                 },
                 new UserRole
                 {
                     Id=Guid.NewGuid(),
                     UserId = userlist[4].Id,
-                    RoleId = 5
+                    RoleId = 2
                 }
             };
             context.UserRoles.AddRange(userrolelist);

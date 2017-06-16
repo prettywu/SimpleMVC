@@ -14,6 +14,8 @@ namespace SimpleMvc.Entitys
         [DefaultValue(false)]
         public bool IsDeleted { get; set; }
 
-        public Role Role { get; set; }
+        public  Role Role { get; set; }
+
+        public  User User { get; set; }
     }
 }

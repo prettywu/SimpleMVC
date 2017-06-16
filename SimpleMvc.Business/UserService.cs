@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Linq;
+using System.Data.Entity.Core.Objects;
 
 namespace SimpleMvc.Business
 {
@@ -135,13 +136,12 @@ namespace SimpleMvc.Business
         /// <param name="pagesize"></param>
         /// <param name="total"></param>
         /// <returns></returns>
-        public List<User> GetUserList(string username, string nickname, int state, string sortname, int sorttype, int pageindex, int pagesize, out int total)
+        public List<User> GetUserList(string username, string nickname, int state,string role, string sortname, int sorttype, int pageindex, int pagesize, out int total)
         {
-            Expression<Func<User, bool>> where = null;
-
+            Expression<Func<User, bool>> where = u => 1 == 1;
             if (!string.IsNullOrEmpty(username))
             {
-                where = u => u.UserName.Contains(username);
+                where = where.And(u => u.UserName.Contains(username));
             }
             if (!string.IsNullOrEmpty(nickname))
             {
@@ -151,18 +151,23 @@ namespace SimpleMvc.Business
             {
                 where = where.And(u => u.State == state);
             }
+            if (!string.IsNullOrEmpty(role))
+            {
+                where = where.And(u => u.UserRoles.Select(ur => ur.Role).Select(r => r.RoleName).Any(n => n.Contains(role)));
+            }
 
-            var orders = new OrderModelField[]
+            OrderModelField[] order = new OrderModelField[]
             {
                 new OrderModelField
                 {
                      propertyName=sortname,
-                     isDesc=sorttype==0?true:false
+                      isDesc=sorttype==0?true:false
                 }
             };
 
-            var list = GetPageList<User>(where, pageindex, pagesize, out total, "UserRoles" , orders);
-            return list;
+            return GetPageList(where, order, new string[] { "UserRoles.Role" }, pageindex, pagesize, out total);
+
+
         }
 
 

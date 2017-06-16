@@ -12,14 +12,14 @@ using SimpleMVC.ViewModels;
 using SimpleMvc.Entitys;
 using SimpleMvc.Common;
 using static SimpleMvc.Entitys.Enums;
-using SimpleMvc.DAL;
+using SimpleMvc.Business;
 
 namespace SimpleMVC.Controllers
 {
     [Authentication]
     public class AdminController : Controller
     {
-        public DbService dbservice = new DbService();
+        public UserService dbservice = new UserService();
 
         #region Views
         // GET: Admin
@@ -143,24 +143,24 @@ namespace SimpleMVC.Controllers
                     }
                 }
 
-                List<User> users;
+                List<User> users=new List<User>();
                 int total = 0;
-                switch (model.sortname)
-                {
-                    case "nickname":
-                        users = dbservice.getPageDate(select, u=>u.NickName, 0, model.page, model.pagesize, out total);
-                        break;
-                    case "Birthday":
-                        users = dbservice.getPageDate(select, u => u.Birthday, 0, model.page, model.pagesize, out total);
-                        break;
-                    case "Gender":
-                        users = dbservice.getPageDate(select, u => u.Gender, 0, model.page, model.pagesize, out total);
-                        break;
-                    default:
-                        users = dbservice.getPageDate(select, u => u.RegistTime, 0, model.page, model.pagesize, out total);
-                        break;
+                //switch (model.sortname)
+                //{
+                //    case "nickname":
+                //        users = dbservice.GetUserList(select, u=>u.NickName, 0, model.page, model.pagesize, out total);
+                //        break;
+                //    case "Birthday":
+                //        users = dbservice.getPageDate(select, u => u.Birthday, 0, model.page, model.pagesize, out total);
+                //        break;
+                //    case "Gender":
+                //        users = dbservice.getPageDate(select, u => u.Gender, 0, model.page, model.pagesize, out total);
+                //        break;
+                //    default:
+                //        users = dbservice.getPageDate(select, u => u.RegistTime, 0, model.page, model.pagesize, out total);
+                //        break;
 
-                }
+                //}
 
                 return new JsonPage(model.page, model.pagesize, total, users, JsonRequestBehavior.AllowGet);
             }

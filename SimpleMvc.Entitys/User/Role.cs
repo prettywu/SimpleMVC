@@ -8,11 +8,6 @@ namespace SimpleMvc.Entitys
 {
     public class Role
     {
-        public Role()
-        {
-            
-        }
-
         public int Id { get; set; }
 
         public string RoleName { get; set; }
@@ -20,5 +15,7 @@ namespace SimpleMvc.Entitys
         public DateTime CreateTime { get; set; }
 
         public bool IsDeleted { get; set; }
+        
+        public  List<UserRole> UserRoles { get; set; }
     }
 }

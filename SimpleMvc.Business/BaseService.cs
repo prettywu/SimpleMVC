@@ -1,6 +1,7 @@
 ﻿using SimpleMvc.DAL;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -10,16 +11,20 @@ namespace SimpleMvc.Business
 {
     public class BaseService
     {
-        protected List<T> GetPageList<T>(Expression<Func<T, bool>> condition, int pageIndex, int pageSize, out int total,string includes, params OrderModelField[] orders) where T : class
+        protected List<T> GetPageList<T>(Expression<Func<T, bool>> condition, OrderModelField[] orders, string[] includes, int pageIndex, int pageSize, out int total ) where T : class
         {
             using (var context = new EFDbContext())
             {
-                IQueryable<T> query ;
-                if (!string.IsNullOrEmpty(includes))
-                    query = context.Set<T>().Include(includes);
-                else
-                    query = context.Set<T>();
+                DbQuery<T> query_in = context.Set<T>();
+                if (includes != null && includes.Any())
+                {
+                    for(int i = 0; i < includes.Length; i++)
+                    {
+                        query_in = query_in.Include(includes[i]);
+                    }
+                }
 
+                IQueryable<T> query = query_in;
                 if (condition != null)
                 {
                     query = query.Where(condition);
@@ -28,7 +33,6 @@ namespace SimpleMvc.Business
 
                 //创建表达式变量参数
                 var parameter = Expression.Parameter(typeof(T), "p");
-
                 if (orders != null && orders.Length > 0)
                 {
                     for (int i = 0; i < orders.Length; i++)
@@ -44,10 +48,7 @@ namespace SimpleMvc.Business
                         MethodCallExpression resultExp = Expression.Call(typeof(Queryable), OrderName, new Type[] { typeof(T), property.PropertyType }, query.Expression, Expression.Quote(orderByExp));
                         query = query.Provider.CreateQuery<T>(resultExp);
                     }
-
                 }
-
-                
 
                 total = query.Count();
                 return query.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
@@ -89,7 +90,39 @@ namespace SimpleMvc.Business
             }
         }
 
-        
+        public int Add<T>(T entity) where T : class
+        {
+            if (entity == null) return 0;
+            using (var context = new EFDbContext())
+            {
+                context.Set<T>().Add(entity);
+                return context.SaveChanges();
+            }
+        }
+
+        public int Update<T>(T entity) where T : class
+        {
+            if (entity == null) return 0;
+            using (var context = new EFDbContext())
+            {
+                var dbset = context.Set<T>();
+                var dbentity = context.Entry(entity);
+                dbentity.State = System.Data.Entity.EntityState.Modified;
+                foreach (var preperty in typeof(T).GetProperties())
+                {
+                    if (dbentity.Property(preperty.Name).CurrentValue != preperty.GetValue(entity))
+                    {
+                        dbentity.Property(preperty.Name).CurrentValue = preperty.GetValue(entity);
+                        dbentity.Property(preperty.Name).IsModified = true;
+                    }
+                    else
+                    {
+                        dbentity.Property(preperty.Name).IsModified = false;
+                    }
+                }
+                return context.SaveChanges();
+            }
+        }
     }
 
     public struct OrderModelField

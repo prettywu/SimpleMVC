@@ -160,8 +160,20 @@ namespace SimpleMVC.Controllers
             try
             {
                 int total = 0;
-                List<User> users = userService.GetUserList(model.username, model.nickname, model.state, model.sortname, model.sorttype, model.page, model.pagesize, out total);
-                var usermodels = users.Select(u => u.ConvertToModel());
+                List<User> users = userService.GetUserList(model.username, model.nickname, model.state,"", model.sortname, model.sorttype, model.page, model.pagesize, out total);
+                var usermodels = users.Select(u => new {
+                    Id = u.Id,
+                    HeadImage = u.HeadImage,
+                    NickName = u.NickName,
+                    UserName = u.UserName,
+                    Email = u.Email,
+                    Phone = u.Phone,
+                    Birthday = u.Birthday.ToString("yyyy-MM-dd"),
+                    Gender=Enum.GetName(typeof(Enums.Gender), u.Gender),
+                    RegistTime=u.RegistTime.ToString("yyyy-MM-dd HH:mm:ss"),
+                    State= Enum.GetName(typeof(Enums.UserState), u.State),
+                    Role=u.UserRoles.Select(ur=>ur.Role.RoleName).ToList()
+                });
 
 
                 return new JsonPage(model.page, model.pagesize, total, usermodels, JsonRequestBehavior.AllowGet);

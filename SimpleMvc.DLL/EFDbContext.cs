@@ -17,6 +17,14 @@ namespace SimpleMvc.DAL
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            //多对多关系表UserRoles
+            //modelBuilder.Entity<User>().HasMany(u => u.Roles).WithMany(r => r.Users).Map(m =>
+            //{
+            //    m.ToTable("UserRoles");
+            //    m.MapLeftKey("UserId");
+            //    m.MapRightKey("RoleId");
+            //});
+
             base.OnModelCreating(modelBuilder);
         }
     }
