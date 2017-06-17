@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Linq;
-using System.Data.Entity.Core.Objects;
 
 namespace SimpleMvc.Business
 {
@@ -122,40 +121,9 @@ namespace SimpleMvc.Business
                 return context.SaveChanges() > 0;
             }
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="username"></param>
-        /// <param name="nickname"></param>
-        /// <param name="role"></param>
-        /// <param name="state"></param>
-        /// <param name="sortname"></param>
-        /// <param name="sorttype"></param>
-        /// <param name="pageindex"></param>
-        /// <param name="pagesize"></param>
-        /// <param name="total"></param>
-        /// <returns></returns>
-        public List<User> GetUserList(string username, string nickname, int state,string role, string sortname, int sorttype, int pageindex, int pagesize, out int total)
+        
+        public List<User> GetUserList(Expression<Func<User, bool>> where, string sortname, int sorttype, int pageindex, int pagesize, out int total)
         {
-            Expression<Func<User, bool>> where = u => 1 == 1;
-            if (!string.IsNullOrEmpty(username))
-            {
-                where = where.And(u => u.UserName.Contains(username));
-            }
-            if (!string.IsNullOrEmpty(nickname))
-            {
-                where = where.And(u => u.NickName.Contains(nickname));
-            }
-            if (state != -1)
-            {
-                where = where.And(u => u.State == state);
-            }
-            if (!string.IsNullOrEmpty(role))
-            {
-                where = where.And(u => u.UserRoles.Select(ur => ur.Role).Select(r => r.RoleName).Any(n => n.Contains(role)));
-            }
-
             OrderModelField[] order = new OrderModelField[]
             {
                 new OrderModelField
@@ -169,7 +137,5 @@ namespace SimpleMvc.Business
 
 
         }
-
-
     }
 }

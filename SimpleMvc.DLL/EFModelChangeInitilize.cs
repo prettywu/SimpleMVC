@@ -69,7 +69,7 @@ namespace SimpleMvc.DAL
                 new User
                 {
                     Id=Guid.NewGuid(),
-                     UserName = "pretty@qq.com",
+                    UserName = "pretty@qq.com",
                     PasswordHash = Helper.MD5encryption("000000"),
                     NickName = "pretty boy",
                     Birthday = new DateTime(1992, 3, 5),
@@ -77,7 +77,7 @@ namespace SimpleMvc.DAL
                     Phone="13813516364",
                     Location="厦门",
                     Gender = (int)Gender.Male,
-                    RegistTime = DateTime.Now.AddMinutes(-12),
+                    RegistTime = DateTime.Now.AddMinutes(-32),
                     LastUpdateTime = DateTime.Now,
                     State=1,
                     HeadImage = "http://p1.qqyou.com/touxiang/UploadPic/2014-5/23/2014052311412225651.jpg"
@@ -95,8 +95,40 @@ namespace SimpleMvc.DAL
                     Gender = (int)Gender.Female,
                     RegistTime = DateTime.Now,
                     LastUpdateTime = DateTime.Now,
-                    State=10,
+                    State=2,
                     HeadImage = "http://www.feizl.com/upload2007/2015_07/150724123232506.jpg"
+                },
+                new User
+                {
+                    Id=Guid.NewGuid(),
+                    UserName = "xiaoyo@163.com",
+                    PasswordHash = Helper.MD5encryption("888888"),
+                    NickName = "小悠",
+                    Birthday = new DateTime(1992, 12, 14),
+                    Email="xiaoyo@163.com",
+                    Phone="1311876743",
+                    Location="苏州",
+                    Gender = (int)Gender.Female,
+                    RegistTime = DateTime.Now.AddDays(-39),
+                    LastUpdateTime = DateTime.Now.AddHours(-50),
+                    State=1,
+                    HeadImage = "http://img3.imgtn.bdimg.com/it/u=782743506,1555858437&fm=26&gp=0.jpg"
+                },
+                new User
+                {
+                    Id=Guid.NewGuid(),
+                    UserName = "miaoyan@qq.com",
+                    PasswordHash = Helper.MD5encryption("888888"),
+                    NickName = "凌妙颜",
+                    Birthday = new DateTime(1992, 12, 14),
+                    Email="miaoyan@qq.com",
+                    Phone="1311876743",
+                    Location="南京",
+                    Gender = (int)Gender.Female,
+                    RegistTime = DateTime.Now.AddDays(-79),
+                    LastUpdateTime = DateTime.Now.AddHours(-84),
+                    State=1,
+                    HeadImage = "http://www.qqpk.cn/Article/UploadFiles/201207/20120701145502640.jpg"
                 }
             };
             context.Users.AddRange(userlist);
@@ -106,7 +138,7 @@ namespace SimpleMvc.DAL
                 new Role{Id=1, RoleName="超级管理员", CreateTime=DateTime.Now,IsDeleted=false},
                 new Role{Id=2, RoleName="管理员", CreateTime=DateTime.Now,IsDeleted=false},
                 new Role{Id=3, RoleName="总经理", CreateTime=DateTime.Now,IsDeleted=false},
-                new Role{Id=4, RoleName="部门经理", CreateTime=DateTime.Now,IsDeleted=false},
+                new Role{Id=4, RoleName="经理", CreateTime=DateTime.Now,IsDeleted=false},
                 new Role{Id=5, RoleName="客服", CreateTime=DateTime.Now,IsDeleted=false}
             };
             context.Roles.AddRange(rolelist);
@@ -123,25 +155,37 @@ namespace SimpleMvc.DAL
                 {
                     Id=Guid.NewGuid(),
                     UserId = userlist[1].Id,
-                    RoleId = 1
+                    RoleId = 2
                 },
                 new UserRole
                 {
                     Id=Guid.NewGuid(),
                     UserId = userlist[2].Id,
-                    RoleId = 2
+                    RoleId = 3
                 },
                 new UserRole
                 {
                     Id=Guid.NewGuid(),
                     UserId = userlist[3].Id,
-                    RoleId = 2
+                    RoleId = 4
                 },
                 new UserRole
                 {
                     Id=Guid.NewGuid(),
                     UserId = userlist[4].Id,
-                    RoleId = 2
+                    RoleId = 5
+                },
+                new UserRole
+                {
+                    Id=Guid.NewGuid(),
+                    UserId = userlist[5].Id,
+                    RoleId = 4
+                },
+                new UserRole
+                {
+                    Id=Guid.NewGuid(),
+                    UserId = userlist[6].Id,
+                    RoleId = 3
                 }
             };
             context.UserRoles.AddRange(userrolelist);

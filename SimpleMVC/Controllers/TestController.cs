@@ -85,7 +85,7 @@ namespace SimpleMVC.Controllers
 
         #region Apis
 
-        public ActionResult Message(string user, string message,string ids="")
+        public ActionResult Message(string user, string message, string ids = "")
         {
             if (string.IsNullOrEmpty(user))
                 GlobalHost.ConnectionManager.GetHubContext<MessageHub>().Clients.All.receive(user, message);
@@ -159,9 +159,38 @@ namespace SimpleMVC.Controllers
         {
             try
             {
+                Expression<Func<User, bool>> where = u => 1 == 1;
+                if (!string.IsNullOrEmpty(model.username))
+                    where = where.And(u => u.UserName.Contains(model.username));
+                if (!string.IsNullOrEmpty(model.nickname))
+                    where = where.And(u => u.NickName.Contains(model.nickname));
+                if (!string.IsNullOrEmpty(model.email))
+                    where = where.And(u => u.Email.Contains(model.email));
+                if (!string.IsNullOrEmpty(model.phone))
+                    where = where.And(u => u.Phone.Contains(model.phone));
+                if (!string.IsNullOrEmpty(model.birthday))
+                    where = where.And(u => u.Birthday == Convert.ToDateTime(model.birthday));
+                if (!string.IsNullOrEmpty(model.registtimerange)&& model.registtimerange.Contains(" ~ "))
+                {
+                    var rang = model.registtimerange.Split(new string[] { " ~ " }, StringSplitOptions.None);
+                    if (!string.IsNullOrEmpty(rang[0]))
+                        where = where.And(u => u.RegistTime >= Convert.ToDateTime(rang[0]));
+                    if (!string.IsNullOrEmpty(rang[1]))
+                        where = where.And(u => u.RegistTime <= Convert.ToDateTime(rang[1]));
+                }
+                    
+                if (model.gender != -1)
+                    where = where.And(u => u.Gender == model.gender);
+                if (model.state != -1)
+                    where = where.And(u => u.State == model.state);
+                if (model.role != -1)
+                    where = where.And(u => u.UserRoles.Exists(ur => ur.RoleId == model.role));
+
+
                 int total = 0;
-                List<User> users = userService.GetUserList(model.username, model.nickname, model.state,"", model.sortname, model.sorttype, model.page, model.pagesize, out total);
-                var usermodels = users.Select(u => new {
+                List<User> users = userService.GetUserList(where, model.sortname, model.sorttype, model.page, model.pagesize, out total);
+                var usermodels = users.Select(u => new
+                {
                     Id = u.Id,
                     HeadImage = u.HeadImage,
                     NickName = u.NickName,
@@ -169,10 +198,10 @@ namespace SimpleMVC.Controllers
                     Email = u.Email,
                     Phone = u.Phone,
                     Birthday = u.Birthday.ToString("yyyy-MM-dd"),
-                    Gender=Enum.GetName(typeof(Enums.Gender), u.Gender),
-                    RegistTime=u.RegistTime.ToString("yyyy-MM-dd HH:mm:ss"),
-                    State= Enum.GetName(typeof(Enums.UserState), u.State),
-                    Role=u.UserRoles.Select(ur=>ur.Role.RoleName).ToList()
+                    Gender = Enum.GetName(typeof(Enums.Gender), u.Gender),
+                    RegistTime = u.RegistTime.ToString("yyyy-MM-dd HH:mm:ss"),
+                    State = Enum.GetName(typeof(Enums.UserState), u.State),
+                    Role = u.UserRoles.Select(ur => ur.Role.RoleName).ToList()
                 });
 
 
@@ -193,7 +222,7 @@ namespace SimpleMVC.Controllers
             {
                 var user = new User()
                 {
-                    Id=Guid.NewGuid(),
+                    Id = Guid.NewGuid(),
                     UserName = model.email,
                     PasswordHash = Helper.MD5encryption(model.email),
                     NickName = model.nickname,

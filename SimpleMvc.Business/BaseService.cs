@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SimpleMvc.Business
 {
@@ -90,7 +88,7 @@ namespace SimpleMvc.Business
             }
         }
 
-        public int Add<T>(T entity) where T : class
+        protected int Add<T>(T entity) where T : class
         {
             if (entity == null) return 0;
             using (var context = new EFDbContext())
@@ -100,7 +98,7 @@ namespace SimpleMvc.Business
             }
         }
 
-        public int Update<T>(T entity) where T : class
+        protected int Update<T>(T entity) where T : class
         {
             if (entity == null) return 0;
             using (var context = new EFDbContext())
