@@ -25,7 +25,7 @@ namespace SimpleMvc.Business
                 IQueryable<T> query = query_in;
                 if (condition != null)
                 {
-                    query = query.Where(condition);
+                    query = query_in.Where(condition);
                 }
                     
 

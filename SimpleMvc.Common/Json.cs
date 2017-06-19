@@ -21,6 +21,7 @@ namespace SimpleMvc.Common
             isSuccess = false;
             message = errormessage;
             code = 500;
+            JsonRequestBehavior = JsonRequestBehavior.AllowGet;
         }
 
         public Json(bool success, int code, string message, object data=null, JsonRequestBehavior behavior = JsonRequestBehavior.AllowGet)

@@ -7,6 +7,46 @@ using System.Threading.Tasks;
 
 namespace SimpleMvc.Common
 {
+    public static class LambdaExtention
+    {
+        public static Expression<Func<T, bool>> And<T>(this Expression<Func<T, bool>> expr1, Expression<Func<T, bool>> expr2)
+        {
+            if (expr2 != null)
+            {
+                if (expr1 == null)
+                    expr1 = expr2;
+                else
+                    expr1 = Expression.Lambda<Func<T, bool>>(Expression.And(expr1.Body, expr2.Body), expr1.Parameters);
+            }
+
+            return expr1;
+        }
+        //public static Expression<Func<T, bool>> Or<T>(this Expression<Func<T, bool>> expr1, Expression<Func<T, bool>> expr2)
+        //{
+        //    if (expr2 != null)
+        //    {
+        //        if (expr1 == null)
+        //            expr1 = expr2;
+        //        else
+        //            expr1 = Expression.Lambda<Func<T, bool>>(Expression.Or(expr1.Body, expr2.Body), expr1.Parameters);
+        //    }
+        //    return expr1;
+        //}
+
+
+        //public static Expression<Func<T, bool>> Or<T>(this Expression<Func<T, bool>> expression1, Expression<Func<T, bool>> expression2)
+        //{
+        //    var invokedExpression = Expression.Invoke(expression2, expression1.Parameters.Cast<Expression>());
+        //    return Expression.Lambda<Func<T, bool>>(Expression.Or(expression1.Body, invokedExpression), expression1.Parameters);
+        //}
+
+        //public static Expression<Func<T, bool>> And<T>(this Expression<Func<T, bool>> expression1, Expression<Func<T, bool>> expression2)
+        //{
+        //    var invokedExpression = Expression.Invoke(expression2, expression1.Parameters.Cast<Expression>());
+        //    return Expression.Lambda<Func<T, bool>>(Expression.And(expression1.Body, invokedExpression), expression1.Parameters);
+        //}
+    }
+
     public class LamadaExtention<T> where T : new()
     {
         private List<Tuple<Expression, RelationType>> list_expression = null;
@@ -18,10 +58,10 @@ namespace SimpleMvc.Common
             m_parameter = Expression.Parameter(typeof(T), "u");
         }
 
-        public void AddExpression(Expression<Func<T,bool>> exp, RelationType type = RelationType.And)
+        public void AddExpression(Expression<Func<T, bool>> exp, RelationType type = RelationType.And)
         {
             list_expression.Add(new Tuple<Expression, RelationType>(exp, type));
-           
+
         }
 
         //构造表达式，存放到list_expression集合里面
@@ -85,7 +125,7 @@ namespace SimpleMvc.Common
             foreach (var expr in this.list_expression)
             {
                 if (whereExpr == null) whereExpr = expr.Item1;
-                else if(expr.Item2== RelationType.And)
+                else if (expr.Item2 == RelationType.And)
                     whereExpr = Expression.And(whereExpr, expr.Item1);
                 else
                     whereExpr = Expression.Or(whereExpr, expr.Item1);
@@ -109,7 +149,7 @@ namespace SimpleMvc.Common
 
     public enum RelationType
     {
-        And=0,
-        Or=1
+        And = 0,
+        Or = 1
     }
 }
