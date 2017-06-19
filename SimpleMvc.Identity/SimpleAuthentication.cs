@@ -11,7 +11,7 @@ namespace SimpleMvc.Identity
         private const string cookie_domain = "";
         private const string cookie_path = "/";
         private const int auth_expires = 1;//单位：小时
-        private const int lock_expires = 5;//单位：分钟
+        private const int lock_expires = 30;//单位：分钟
 
         private static Func<string, object> getUsercallback;
         private static Func<string, object, bool> isInRole;

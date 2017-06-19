@@ -14,18 +14,18 @@ namespace SimpleMvc.Business
         {
             Expression<Func<Lawsuit, bool>> where = l => 1 == 1;
             List<Lawsuit> list;
-            if (!string.IsNullOrEmpty(no))
-            {
-                where.And(l => l.LawsuitNo.Contains(no));
-            }
-            if (!string.IsNullOrEmpty(title))
-            {
-                where.And(l => l.Title.Contains(title));
-            }
-            if (state != -1)
-            {
-                where.And(l => l.State == state);
-            }
+            //if (!string.IsNullOrEmpty(no))
+            //{
+            //    where.And(l => l.LawsuitNo.Contains(no));
+            //}
+            //if (!string.IsNullOrEmpty(title))
+            //{
+            //    where.And(l => l.Title.Contains(title));
+            //}
+            //if (state != -1)
+            //{
+            //    where.And(l => l.State == state);
+            //}
             
             var orders = new OrderModelField[]
             {

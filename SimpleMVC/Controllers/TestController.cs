@@ -4,7 +4,6 @@ using SimpleMvc.Common;
 using SimpleMvc.Entitys;
 using SimpleMvc.Identity;
 using SimpleMVC.Hubs;
-using SimpleMVC.Models;
 using SimpleMVC.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -159,34 +158,67 @@ namespace SimpleMVC.Controllers
         {
             try
             {
-                Expression<Func<User, bool>> where = u => 1 == 1;
+                LamadaExtention<User> condition = new LamadaExtention<SimpleMvc.Entitys.User>();
+                //Expression condition =null;
+                Expression<Func<User, bool>> where ;
+                //condition = where;
+
+
+                Expression<Func<User, bool>> left = u => u.NickName.Contains("周");
+                Expression<Func<User, bool>> right = u => u.NickName.Contains("润青");
+
+                Expression condit = Expression.And(left.Reduce(), right.Reduce());
+
+                
+
                 if (!string.IsNullOrEmpty(model.username))
-                    where = where.And(u => u.UserName.Contains(model.username));
-                if (!string.IsNullOrEmpty(model.nickname))
-                    where = where.And(u => u.NickName.Contains(model.nickname));
-                if (!string.IsNullOrEmpty(model.email))
-                    where = where.And(u => u.Email.Contains(model.email));
-                if (!string.IsNullOrEmpty(model.phone))
-                    where = where.And(u => u.Phone.Contains(model.phone));
-                if (!string.IsNullOrEmpty(model.birthday))
-                    where = where.And(u => u.Birthday == Convert.ToDateTime(model.birthday));
-                if (!string.IsNullOrEmpty(model.registtimerange)&& model.registtimerange.Contains(" ~ "))
                 {
-                    var rang = model.registtimerange.Split(new string[] { " ~ " }, StringSplitOptions.None);
-                    if (!string.IsNullOrEmpty(rang[0]))
-                        where = where.And(u => u.RegistTime >= Convert.ToDateTime(rang[0]));
-                    if (!string.IsNullOrEmpty(rang[1]))
-                        where = where.And(u => u.RegistTime <= Convert.ToDateTime(rang[1]));
+                    //Expression<Func<User, bool>> w1 = u => u.UserName.Contains(model.username);
+                    //condition = Expression.And(condition, w1);
+
+                    condition.AddExpression("UserName",model.username,ConditionType.Contains);
+                }
+
+                if (!string.IsNullOrEmpty(model.nickname))
+                {
+                    //Expression<Func<User, bool>> w1 = u => u.NickName.Contains(model.nickname);
+                    //condition = Expression.And(condition, w1);
+                    condition.AddExpression("NickName", model.nickname, ConditionType.Contains);
+                }
+                //if (!string.IsNullOrEmpty(model.email))
+                //    where = where.And(u => u.Email.Contains(model.email));
+                //if (!string.IsNullOrEmpty(model.phone))
+                //    where = where.And(u => u.Phone.Contains(model.phone));
+                //if (!string.IsNullOrEmpty(model.birthday))
+                //    where = where.And(u => u.Birthday == Convert.ToDateTime(model.birthday));
+                //if (!string.IsNullOrEmpty(model.registtimerange)&& model.registtimerange.Contains(" ~ "))
+                //{
+                //    var rang = model.registtimerange.Split(new string[] { " ~ " }, StringSplitOptions.None);
+                //    if (!string.IsNullOrEmpty(rang[0]))
+                //        where = where.And(u => u.RegistTime >= Convert.ToDateTime(rang[0]));
+                //    if (!string.IsNullOrEmpty(rang[1]))
+                //        where = where.And(u => u.RegistTime <= Convert.ToDateTime(rang[1]));
+                //}
+
+                //if (model.gender != -1)
+                //    where = where.And(u => u.Gender == model.gender);
+                if (model.state != -1)
+                {
+                    //Expression<Func<User, bool>> w1 = u => u.State==model.state;
+                    //condition = Expression.And(condition, w1);
+
+                    condition.AddExpression("State", model.state, ConditionType.Equal);
                 }
                     
-                if (model.gender != -1)
-                    where = where.And(u => u.Gender == model.gender);
-                if (model.state != -1)
-                    where = where.And(u => u.State == model.state);
                 if (model.role != -1)
-                    where = where.And(u => u.UserRoles.Exists(ur => ur.RoleId == model.role));
+                {
+                    //Expression<Func<User, bool>> w1 = u => u.UserRoles.Exists(ur => ur.RoleId == model.role);
+                    //condition = Expression.And(condition, w1);
 
-
+                    //condition.AddExpression("Role", model.role, ConditionType.Equal);
+                }
+                //where = Expression.Lambda<Func<User, bool>>(condition, Expression.Parameter(typeof(User), "u"));
+                where = condition.GetLambda();
                 int total = 0;
                 List<User> users = userService.GetUserList(where, model.sortname, model.sorttype, model.page, model.pagesize, out total);
                 var usermodels = users.Select(u => new
