@@ -40,8 +40,8 @@ namespace SimpleMvc.Entitys
         [DefaultValue(false)]
         public bool IsDeleted { get; set; }
 
-        public  List<UserRole> UserRoles { get; set; }
+        public  ICollection<UserRole> UserRoles { get; set; }
 
-        public  List<Login> Logins { get; set; }
+        public ICollection<Login> Logins { get; set; }
     }
 }

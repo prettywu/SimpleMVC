@@ -32,5 +32,35 @@ namespace SimpleMVC.ViewModels
         //分页
         public int page { get; set; }
         public int pagesize { get; set; }
+
+        public DateTime? Birthdate
+        {
+            get {
+                if (!string.IsNullOrEmpty(birthday))
+                    return Convert.ToDateTime(birthday);
+                else
+                    return null;        
+            }
+        }
+
+        public DateTime? StartDate
+        {
+            get {
+                if (!string.IsNullOrEmpty(registtimerange) && registtimerange.Contains("-"))
+                    return Convert.ToDateTime(registtimerange.Split(new string[] { " - " }, StringSplitOptions.RemoveEmptyEntries)[0]);
+                else
+                    return null;
+            }
+        }
+
+        public DateTime? EndDate
+        {
+            get {
+                if (!string.IsNullOrEmpty(registtimerange) && registtimerange.Contains("-"))
+                    return Convert.ToDateTime(registtimerange.Split(new string[] { " - " }, StringSplitOptions.RemoveEmptyEntries)[1]);
+                else
+                    return null;
+            }
+        }
     }
 }

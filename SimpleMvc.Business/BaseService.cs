@@ -9,14 +9,14 @@ namespace SimpleMvc.Business
 {
     public class BaseService
     {
-        protected List<T> GetPageList<T>(Expression<Func<T, bool>> condition, OrderModelField[] orders, string[] includes, int pageIndex, int pageSize, out int total ) where T : class
+        protected List<T> GetPageList<T>(Expression<Func<T, bool>> condition, OrderModelField[] orders, string[] includes, int pageIndex, int pageSize, out int total) where T : class
         {
             using (var context = new EFDbContext())
             {
                 DbQuery<T> query_in = context.Set<T>();
                 if (includes != null && includes.Any())
                 {
-                    for(int i = 0; i < includes.Length; i++)
+                    for (int i = 0; i < includes.Length; i++)
                     {
                         query_in = query_in.Include(includes[i]);
                     }
@@ -27,7 +27,7 @@ namespace SimpleMvc.Business
                 {
                     query = query_in.Where(condition);
                 }
-                    
+                
 
                 //创建表达式变量参数
                 var parameter = Expression.Parameter(typeof(T), "p");
