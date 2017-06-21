@@ -214,7 +214,7 @@ $(function () {
             name: now.toString(),
             value: [
                 +now,
-                Math.round(value)
+                1000+Math.round(value)
             ]
         }
     }
@@ -240,6 +240,8 @@ $(function () {
         title: {
             text: '动态数据+时间坐标轴'
         },
+        color: ['#91c7ae'],
+        animation: true,
         tooltip: {
             trigger: 'axis',
             //formatter: function (params) {
@@ -253,15 +255,15 @@ $(function () {
         },
         xAxis: {
             type: 'time',
-            max:'dataMax',
-            minInterval:2000,
             splitLine: {
                 show: false
             }
         },
         yAxis: {
             type: 'value',
-            boundaryGap: [0, '100%'],
+            boundaryGap: ['10%', '10%'],
+            min: 'dataMin',
+            max: 'dataMin',
             splitLine: {
                 show: false
             }
@@ -271,10 +273,13 @@ $(function () {
             type: 'line',
             showSymbol: false,
             hoverAnimation: false,
+            areaStyle: { normal: {} },
             data: data
         }]
     };
     var myChart = echarts.init(document.getElementById('revenue-chart'));
+    window.onresize = myChart.resize;
+
     myChart.setOption(echartoption);
     setInterval(function () {
         if (data.length > 50)
