@@ -33,8 +33,6 @@ namespace SimpleMvc.Entitys
 
         public DateTime RegistTime { get; set; }
 
-        public string Company { get; set; }
-
         public int State { get; set; }
 
         [DefaultValue(false)]
