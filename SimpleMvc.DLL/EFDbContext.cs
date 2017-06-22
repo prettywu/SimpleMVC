@@ -1,5 +1,6 @@
 ﻿using SimpleMvc.Entitys;
 using System.Data.Entity;
+using System.Data.Entity.ModelConfiguration.Conventions;
 
 namespace SimpleMvc.DAL
 {
@@ -17,6 +18,11 @@ namespace SimpleMvc.DAL
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            // 禁用一对多级联删除
+            modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
+            // 禁用多对多级联删除
+            modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();
+
             //多对多关系表UserRoles
             //modelBuilder.Entity<User>().HasMany(u => u.Roles).WithMany(r => r.Users).Map(m =>
             //{

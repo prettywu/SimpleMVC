@@ -237,9 +237,6 @@ $(function () {
 
 
     var echartoption = {
-        title: {
-            text: '动态数据+时间坐标轴'
-        },
         color: ['#91c7ae'],
         animation: true,
         tooltip: {
@@ -255,25 +252,48 @@ $(function () {
         },
         xAxis: {
             type: 'time',
-            splitLine: {
+            name: '时间',
+            splitLine:{
+                show:false
+            },
+            axisLine: {
+                show: false,
+                lineStyle: {
+                    color: '#dd4b39 ',
+                }
+            },
+            axisTick: {
                 show: false
             }
         },
         yAxis: {
             type: 'value',
-            boundaryGap: ['10%', '10%'],
-            min: 'dataMin',
-            max: 'dataMin',
+            name:'当前在线人数',
+            boundaryGap: [0, '20%'],
             splitLine: {
                 show: false
+            },
+            axisLine: {
+                show: false,
+                lineStyle: {
+                    color: '#dd4b39 ',
+                }
+            },
+            axisTick: {
+                show:false
             }
         },
+        textStyle: {
+            color: '#777',
+            fontFamily:'Source Sans Pro'
+        },
         series: [{
-            name: '模拟数据',
+            name: '在线人数',
             type: 'line',
             showSymbol: false,
             hoverAnimation: false,
             areaStyle: { normal: {} },
+            smooth:true,
             data: data
         }]
     };
