@@ -18,8 +18,9 @@ namespace SimpleMVC
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             SimpleAuthentication.Regist(UserService.GetUserByToken, UserService.IsInRole);
-            
 
+
+            //Database.SetInitializer<EFDbContext>(new EFInitilize());
             Database.SetInitializer<EFDbContext>(new EFModelChangeInitilize());
             //using (var context = new EFDbContext())
             //{

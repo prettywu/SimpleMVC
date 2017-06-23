@@ -17,19 +17,18 @@ namespace SimpleMVC.Hubs
         /// <summary>
         /// 用户的connectionID与用户名对照表
         /// </summary>
-        private readonly static Dictionary<string, List<string>> _connections = new Dictionary<string, List<string>>();
+        internal readonly static Dictionary<string, List<string>> _connections = new Dictionary<string, List<string>>();
         private string userid;
 
         public MessageHub()
         {
-            if (HttpContext.Current != null&& HttpContext.Current.User != null)
+            if (HttpContext.Current != null && HttpContext.Current.User != null)
                 this.userid = HttpContext.Current.User.GetUser<User>().Id.ToString();
         }
 
-        public void SendAll(string name, string message)
+        public void SendAll(string message,int type)
         {
-
-            Clients.All.receive(name, message);
+            Clients.All.receive(message, type);
         }
 
         public void SendTo(string user, string message, int type)
@@ -65,7 +64,22 @@ namespace SimpleMVC.Hubs
 
             return base.OnDisconnected(stopCalled);
         }
+    }
 
+    public static class MessagePull
+    {
+        public static void PushMessage(string content,int type=1, string[] userids=null)
+        {
+            if (userids == null)
+            {
+                GlobalHost.ConnectionManager.GetHubContext<MessageHub>().Clients.All.receiveMessage(content, type);
+            }
+            else
+            {
+                var connectionids = MessageHub._connections.Where(kv => userids.Contains(kv.Key)).SelectMany(kv => kv.Value).ToList();
+                GlobalHost.ConnectionManager.GetHubContext<MessageHub>().Clients.Clients(connectionids).receiveMessage(content, type);
+            }
+        }
 
     }
 }

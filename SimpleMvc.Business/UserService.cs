@@ -112,16 +112,34 @@ namespace SimpleMvc.Business
             }
         }
 
-        public bool AddUser(User user)
+        public bool AddUser(User user,bool sendMessage=false)
         {
             if (user == null) return false;
+            string[] roles = new string[] { "管理员", "超级管理员" };
             using (var context = new EFDbContext())
             {
                 context.Users.Add(user);
+                var admins = context.Users.Where(u => u.UserRoles.Select(ur => ur.Role.RoleName).Intersect(roles).Any()).ToList();
+                foreach (var admin in admins)
+                {
+                    var notice = new Notice
+                    {
+                        Id = Guid.NewGuid(),
+                        ReceiverId = admin.Id,
+                        Content = "一个新用户待审核",
+                        Link = "",
+                        Type = (int)Enums.MessageType.消息,
+                        IsReaded = false,
+                        CreateTime = DateTime.Now,
+                        IsDeleted = false
+                    };
+                    context.Notices.Add(notice);
+                }
+
                 return context.SaveChanges() > 0;
             }
         }
-        
+
         public List<User> GetUserList(Expression<Func<User, bool>> where, string sortname, int sorttype, int pageindex, int pagesize, out int total)
         {
             OrderModelField[] order = new OrderModelField[]

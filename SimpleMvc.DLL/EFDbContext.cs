@@ -14,7 +14,11 @@ namespace SimpleMvc.DAL
         public DbSet<Opinion> Opinions { get; set; }
         public DbSet<Participant> Participants { get; set; }
         public DbSet<Application> Applications { get; set; }
+        public DbSet<Notice> Notices { get; set; }
 
+        public EFDbContext() : base("SimpleContext")
+        {
+        }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

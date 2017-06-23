@@ -722,14 +722,13 @@
     <script>
         var num_message = 0;
         $(function () {
-
             var chat = $.connection.chat;
 
-            chat.client.receive = function (name, message) {
+            chat.client.receive = function (message, type) {
                 num_message += 1;
                 $("#span_message").text(num_message);
               
-                messageAlert(name + message);
+                messageAlert(message);
             };
 
             $.connection.hub.start().done(function () {
@@ -737,7 +736,7 @@
             });
             $('#btn_Profile').click(function () {
 
-                chat.server.sendAll("Profile", "消息" + num_message);
+                chat.server.sendAll("消息" + num_message,2);
 
             });
         });

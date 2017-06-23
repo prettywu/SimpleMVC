@@ -98,5 +98,14 @@ namespace SimpleMvc.Entitys
             审核通过=1,
             审核否决=-1
         }
+
+        /// <summary>
+        /// 消息类型
+        /// </summary>
+        public enum MessageType
+        {
+            通知 = 10,
+            消息 = 20
+        }
     }
 }

@@ -6,20 +6,26 @@ using System.Threading.Tasks;
 
 namespace SimpleMvc.Entitys
 {
-    public class SMessage
+    public class Notice
     {
         public Guid Id { get; set; }
 
         public Guid ReceiverId { get; set; }
 
+        /// <summary>
+        /// 通知=10,事件=20
+        /// </summary>
         public int Type { get; set; }
 
         public string Content { get; set; }
 
-        public string Reltive { get; set; }
+        public string Link { get; set; }
 
-        public int ReadState { get; set; }
+        public bool IsReaded { get; set; }
+
+        public DateTime CreateTime { get; set; }
 
         public bool IsDeleted { get; set; }
+        
     }
 }

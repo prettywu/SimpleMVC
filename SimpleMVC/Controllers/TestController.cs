@@ -231,6 +231,7 @@ namespace SimpleMVC.Controllers
                 {
                     Id = Guid.NewGuid(),
                     UserName = model.email,
+                    Email=model.email,
                     PasswordHash = Helper.MD5encryption(model.email),
                     NickName = model.nickname,
                     Birthday = Convert.ToDateTime(model.birthday),
@@ -239,9 +240,10 @@ namespace SimpleMVC.Controllers
                     IsDeleted = false,
                     State = 1,
                     RegistTime = DateTime.Now,
-                    LastUpdateTime = DateTime.Now
+                    LastUpdateTime = DateTime.Now,
+                    Location=model.location
                 };
-                bool result = new UserService().AddUser(user);
+                bool result = new UserService().AddUser(user,true);
 
                 if (result)
                     return new Json(true, 200, "添加用户成功");

@@ -10,8 +10,8 @@ namespace SimpleMvc.Identity
         private const string lock_key = "splk";
         private const string cookie_domain = "";
         private const string cookie_path = "/";
-        private const int auth_expires = 1;//单位：小时
-        private const int lock_expires = 30;//单位：分钟
+        private const int auth_expires = 1;//登录失效 单位：天
+        private const int lock_expires = 30;//锁定时间 单位：分钟
 
         private static Func<string, object> getUsercallback;
         private static Func<string, object, bool> isInRole;
@@ -23,7 +23,7 @@ namespace SimpleMvc.Identity
         }
 
 
-        public static void WriteToken(HttpApplication context)
+        internal static void WriteToken(HttpApplication context)
         {
             if (context.User != null && context.User.Identity != null && context.User.Identity.IsAuthenticated)
             {
@@ -86,7 +86,7 @@ namespace SimpleMvc.Identity
 
         }
 
-        public static void ReadAuthenticateInfo(HttpApplication context)
+        internal static void ReadAuthenticateInfo(HttpApplication context)
         {
             HttpCookie cookie = context.Request.Cookies[auth_key];
             if (cookie != null && !string.IsNullOrEmpty(cookie.Value))

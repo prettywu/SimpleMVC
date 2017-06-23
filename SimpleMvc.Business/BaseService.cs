@@ -9,6 +9,17 @@ namespace SimpleMvc.Business
 {
     public class BaseService
     {
+        /// <summary>
+        /// 分页搜索
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="condition"></param>
+        /// <param name="orders"></param>
+        /// <param name="includes"></param>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="total"></param>
+        /// <returns></returns>
         protected List<T> GetPageList<T>(Expression<Func<T, bool>> condition, OrderModelField[] orders, string[] includes, int pageIndex, int pageSize, out int total) where T : class
         {
             using (var context = new EFDbContext())
@@ -54,6 +65,12 @@ namespace SimpleMvc.Business
 
         }
 
+        /// <summary>
+        /// 过滤查询
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="where"></param>
+        /// <returns></returns>
         protected List<T> GetEntitys<T>(Expression<Func<T, bool>> where) where T : class
         {
             using (var context = new EFDbContext())
@@ -119,6 +136,28 @@ namespace SimpleMvc.Business
                     }
                 }
                 return context.SaveChanges();
+            }
+        }
+
+        /// <summary>  
+        /// 更新指定字段,必须要给主键和更新字段赋值
+        /// </summary>  
+        /// <param name="entity">实体</param>  
+        /// <param name="fileds">更新字段数组</param>  
+        public void UpdateEntityFields<T>(T entity, List<string> fileds) where T:class
+        {
+            if (entity != null && fileds != null)
+            {
+                using (var context = new EFDbContext())
+                {
+                    context.Set<T>().Attach(entity);
+                    var SetEntry = ((IObjectContextAdapter)context).ObjectContext.ObjectStateManager.GetObjectStateEntry(entity);
+                    foreach (var t in fileds)
+                    {
+                        SetEntry.SetModifiedProperty(t);
+                    }
+                    context.SaveChanges();
+                }
             }
         }
     }
